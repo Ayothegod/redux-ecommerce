@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "node --experimental-specifier-resolution=node dist/index.js",
+    "start": "NODE_OPTIONS='--experimental-specifier-resolution=node' node dist/index.js",
     "deploy:app": "tsc && node update-imports.cjs",
     "db:migrate": "prisma migrate dev"
   },
