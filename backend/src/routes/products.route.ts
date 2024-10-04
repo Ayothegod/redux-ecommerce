@@ -1,8 +1,8 @@
 import { log } from "console";
 import { Hono } from "hono";
-import { authMiddleware } from "../middlewares/authMiddleware";
-import { prisma } from "../utils/db";
-import { productSchema } from "../utils/schema";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
+import { prisma } from "../utils/db.js";
+import { productSchema } from "../utils/schema.js";
 
 type Variables = {
   seller: string;

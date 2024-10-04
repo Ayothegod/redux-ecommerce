@@ -1,6 +1,6 @@
 import { Context, Hono, Next } from "hono";
-import { prisma } from "../utils/db";
-import { verifyAccessToken } from "../utils/services";
+import { prisma } from "../utils/db.js";
+import { verifyAccessToken } from "../utils/services.js";
 import { log } from "console";
 
 export const authMiddleware =

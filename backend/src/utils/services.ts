@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import argon2 from "argon2";
-import { UserType } from "./types";
+import { UserType } from "./types.js";
 
 const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET || "";
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || "";

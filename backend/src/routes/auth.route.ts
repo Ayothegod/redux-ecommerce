@@ -1,22 +1,16 @@
 import { log } from "console";
 import { Hono } from "hono";
-import { sendMail } from "../utils/sendMail";
+import { prisma } from "../utils/db.js";
 import {
-  forgotPasswordSchema,
   loginSchema,
-  registrationSchema,
-  resetPasswordSchema,
-} from "../utils/schema";
-import { prisma } from "../utils/db";
+  registrationSchema
+} from "../utils/schema.js";
 import {
-  generateAccessToken,
   comparePassword,
+  generateAccessToken,
   generateRefreshToken,
-  hashPassword,
-  verifyAccessToken,
-  verifyRefreshToken,
-} from "../utils/services";
-import { UserType } from "../utils/types";
+  hashPassword
+} from "../utils/services.js";
 
 const auth = new Hono();
 
