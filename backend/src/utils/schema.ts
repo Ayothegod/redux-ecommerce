@@ -70,3 +70,15 @@ export const productSchema = z.object({
     .string({ required_error: "sellerId is required" })
     .min(3, { message: "sellerId must be at least 3 characters long" }),
 });
+
+export const updateProductSchema = z.object({
+  name: z.string().optional(),
+  description: z.string().optional(),
+  imageUrl: z.string().optional(),
+  price: z.coerce.number().optional(),
+  category: CategoryType,
+  tags: z.array(z.string()).optional(),
+  sellerId: z
+    .string({ required_error: "sellerId is required" })
+    .min(3, { message: "sellerId must be at least 3 characters long" }),
+});

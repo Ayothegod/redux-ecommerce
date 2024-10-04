@@ -1,7 +1,7 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import authRoute from "./routes/auth.route.js";
-import productsRoute from "./routes/products.route.js";
+import sellerProductsRoute from "./routes/products.route.js";
 
 const app = new Hono();
 
@@ -9,7 +9,7 @@ app.get("/", (c) => {
   return c.text("Hello User, Welcome to paxx.");
 });
 app.route("/api/v1/auth", authRoute)
-app.route("/api/v1/products", productsRoute);
+app.route("/api/v1/products", sellerProductsRoute);
 
 const port = 6000;
 console.log(`Server is running on port ${port}`);

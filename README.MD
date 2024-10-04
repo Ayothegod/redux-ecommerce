@@ -19,7 +19,5 @@ Order (checkout) - link to product
 
 
 // settings
-// auth
 // orders
-// products
 // customers

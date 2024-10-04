@@ -37,7 +37,7 @@ model Product {
   description String
   price       Float
   imageUrl    String?
-  category    CategoryType
+  category    CategoryType @unique
   tags        String[]
   sellerId    String
   seller      User         @relation(fields: [sellerId], references: [id])
