@@ -1,7 +1,5 @@
-import { Context, Hono, Next } from "hono";
-import { prisma } from "../utils/db.js";
+import { Context, Next } from "hono";
 import { verifyAccessToken } from "../utils/services.js";
-import { log } from "console";
 
 export const authMiddleware =
   (requiredRole: string) => (c: Context, next: Next) => {
