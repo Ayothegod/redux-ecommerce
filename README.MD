@@ -11,19 +11,15 @@ Dashboard
 
 product require (customer name, date scheckdout, [pending,delivered(send-to-mail)])
 
-flyio, neon, render
-
-Products 
-- name
-- description
-- price
-- seller info (id)
-- image????
-- category 
-- tags [choose from array - table, chair, cover etc]
-
 Order (checkout) - link to product
 - order id (maybe id using ints eg 1,2,3)
 - buyer name and email
 - date of order
 - status of order [pending,delivered(sent-to-mail)]
+
+
+// settings
+// auth
+// orders
+// products
+// customers
