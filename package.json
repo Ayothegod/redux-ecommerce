@@ -10,7 +10,8 @@
     "dev:single": "pnpm -r run dev",
     "build:frontend": "pnpm --filter frontend run build",
     "build:backend": "pnpm --filter backend run build",
-    "build": "pnpm --filter backend run build"
+    "build": "pnpm --filter backend run build",
+    "real:build": "pnpm -r run build"
   },
   "keywords": [],
   "author": "",

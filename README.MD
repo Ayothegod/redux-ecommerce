@@ -2,8 +2,6 @@
 # Redux Ecommerce Bounty
 ##### SUSPEND DB AFTER 72 HOURS - 3 DAYS
 
-"build": "pnpm -r run build"
-
 ### seller
 Dashboard
 - Top products (products with highest amount of time sold - delivered)
