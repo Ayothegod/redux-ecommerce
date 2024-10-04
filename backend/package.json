@@ -3,7 +3,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
+    "build": "prisma migrate deploy && prisma generate && tsc",
     "start": "node dist/index.js",
     "deploy:app": "tsc && node update-imports.cjs",
     "db:migrate": "prisma migrate dev"
