@@ -3,8 +3,6 @@ import { verifyAccessToken } from "../utils/services.js";
 
 export const authMiddleware =
   (requiredRole: string) => (c: Context, next: Next) => {
-    const role = "seller";
-
     const token = c.req.header("authorization")?.split(" ")[1];
 
     if (!token) {
