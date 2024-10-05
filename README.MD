@@ -21,3 +21,10 @@ Order (checkout) - link to product
 // settings
 // orders
 // customers
+
+POST /orders - Create a new order
+GET /orders/:id - Get details of a specific order
+GET /orders - Get all orders for a user
+PUT /orders/:id - Update an existing order (e.g., shipping details)
+DELETE /orders/:id - Cancel or delete an order
+GET /orders/status/:id - Check the status of an order

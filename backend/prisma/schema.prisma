@@ -23,6 +23,8 @@ model User {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   products    Product[]
+  orders      Order[]
+  OrderItems  OrderItem[]
 }
 
 enum AccountType {
@@ -37,14 +39,55 @@ model Product {
   description String
   price       Float
   imageUrl    String?
-  category    CategoryType @unique
+  category    CategoryType
   tags        String[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
   sellerId    String
-  seller      User         @relation(fields: [sellerId], references: [id])
+  Seller      User         @relation(fields: [sellerId], references: [id])
+  orderItems  OrderItem[]
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  status      OrderStatus @default(PENDING)
+  totalAmount Float
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  shopperId   String
+  Shopper     User        @relation(fields: [shopperId], references: [id])
+  orderItems  OrderItem[]
+}
+
+model OrderItem {
+  id        String          @id @default(cuid())
+  orderId   String
+  productId String
+  sellerId  String
+  quantity  Int
+  price     Float
+  status    OrderItemStatus @default(PENDING)
+  // Relations
+  order     Order           @relation(fields: [orderId], references: [id]) // Reference to Order
+  product   Product         @relation(fields: [productId], references: [id]) // Product ordered
+  seller    User            @relation(fields: [sellerId], references: [id]) // Seller of the product
+}
+
+enum OrderItemStatus {
+  PENDING
+  SHIPPED
+  DELIVERED
+  CANCELLED
 }
 
 enum CategoryType {
   TABLE
   CHAIR
   COVER
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
 }

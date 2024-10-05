@@ -1,15 +1,12 @@
 import { log } from "console";
 import { Hono } from "hono";
 import { prisma } from "../utils/db.js";
-import {
-  loginSchema,
-  registrationSchema
-} from "../utils/schema.js";
+import { loginSchema, registrationSchema } from "../utils/schema.js";
 import {
   comparePassword,
   generateAccessToken,
   generateRefreshToken,
-  hashPassword
+  hashPassword,
 } from "../utils/services.js";
 
 const auth = new Hono();
@@ -137,6 +134,19 @@ const authRoute = auth
       });
     } catch (error: any) {
       log(error);
+      c.status(500);
+      c.json({ message: error.message, statusCode: 500, data: null });
+    }
+  })
+  .delete("logout", async (c) => {
+    try {
+      c.status(200);
+      return c.json({
+        message: "Login successful!",
+        statusCode: 200,
+        // data: { accessToken, refreshToken },
+      });
+    } catch (error: any) {
       c.status(500);
       c.json({ message: error.message, statusCode: 500, data: null });
     }
