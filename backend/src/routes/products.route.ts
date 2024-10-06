@@ -5,18 +5,18 @@ import { prisma } from "../utils/db.js";
 import { productSchema, updateProductSchema } from "../utils/schema.js";
 
 type Variables = {
-  seller: string;
+  user: string;
 };
 
 const auth = new Hono<{ Variables: Variables }>();
 
 const sellerProductsRoute = auth
   .get("/test", authMiddleware("SELLER"), (c) => {
-    const sellerDetails = c.get("seller");
-    log(sellerDetails);
+    const userDetails: any = c.get("user");
+    log(userDetails);
     return c.json({
-      message: "hello seller, welcome to your dashboard",
-      sellerDetails,
+      message: `hello User-${userDetails.role}, welcome to your dashboard`,
+      userDetails,
     });
   })
   .get("/products", async (c) => {
@@ -67,7 +67,7 @@ const sellerProductsRoute = auth
         return c.json({ message: errorMessages.join(", ") });
       }
 
-      const sellerDetails: any = c.get("seller");
+      const sellerDetails: any = c.get("user");
 
       const product = await prisma.product.create({
         data: {
@@ -106,7 +106,7 @@ const sellerProductsRoute = auth
         return c.json({ message: errorMessages.join(", ") });
       }
 
-      const sellerDetails: any = c.get("seller");
+      const sellerDetails: any = c.get("user");
 
       const updatedProduct = await prisma.product.update({
         where: {

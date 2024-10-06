@@ -21,6 +21,6 @@ export const authMiddleware =
       return c.json({ message: "Access forbidden: insufficient permissions" });
     }
 
-    c.set("seller", decoded);
+    c.set("user", decoded);
     return next();
   };

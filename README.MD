@@ -9,13 +9,11 @@ Dashboard
 - total products
 
 
-product require (customer name, date scheckdout, [pending,delivered(send-to-mail)])
-
-Order (checkout) - link to product
-- order id (maybe id using ints eg 1,2,3)
-- buyer name and email
-- date of order
-- status of order [pending,delivered(sent-to-mail)]
+    "id": "cm1v28d6m0000xnq9buezoh8a",
+    "email": "Ayodailva12@gmail.com",
+    "role": "SELLER",
+    "iat": 1728206772,
+    "exp": 1728811572
 
 
 // settings

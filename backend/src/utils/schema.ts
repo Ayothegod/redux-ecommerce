@@ -82,3 +82,21 @@ export const updateProductSchema = z.object({
     .string({ required_error: "sellerId is required" })
     .min(3, { message: "sellerId must be at least 3 characters long" }),
 });
+
+const OrderItemStatus = z.enum(
+  ["PENDING", "SHIPPED", "DELIVERED", "CANCELLED"],
+  {
+    message: "it can only be PENDING, SHIPPED, DELIVERED or CANCELLED",
+  }
+);
+
+export const orderItem = z.object({
+  orderId: z.string().optional(),
+  productId: z.string(),
+  sellerId: z.string(),
+  quantity: z.string(),
+  price: z.string(),
+  status: OrderItemStatus,
+});
+
+export type OrderItem = z.infer<typeof orderItem>
