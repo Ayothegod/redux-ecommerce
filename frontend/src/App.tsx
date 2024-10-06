@@ -1,7 +1,10 @@
+import { Button } from "./components/ui/button";
+
 function App() {
   return (
     <div>
       <div className="text-5xl text-red-100">Welcome root!</div>
+      <Button>Click me</Button>
     </div>
   );
 }
