@@ -13,6 +13,7 @@ type Variables = {
   user: string;
 };
 
+// TODO: put middleware to limit the usage of these endponts
 const auth = new Hono<{ Variables: Variables }>();
 
 const productsOrders = auth
@@ -92,7 +93,7 @@ const productsOrders = auth
       c.json({ message: error.message, statusCode: 500, data: null });
     }
   })
-  // SELLER CAN'T ACCESS THIS ORDER -> user/admin
+  // user/admin
   .get("/orders/:id", async (c) => {
     try {
       const id = c.req.param("id");
@@ -106,50 +107,62 @@ const productsOrders = auth
         return c.json({ error: "Order not found" }, 404);
       }
 
-      return c.json({
-        message: "Single order returned successfully!",
-        statusCode: 201,
-        data: { order },
-      }, 200);
+      return c.json(
+        {
+          message: "Single order returned successfully!",
+          statusCode: 201,
+          data: { order },
+        },
+        200
+      );
     } catch (error: any) {
       c.json({ message: error.message, statusCode: 500, data: null }, 500);
     }
   })
-  // ONLY ADMIN CAN UPDATE ORDER STATUS OR LIKES - can update route to update anything
+  // ONLY ADMIN CAN UPDATE ORDER STATUS
   .put("/orders/:id/status", async (c) => {
     try {
       const id = c.req.param("id");
       const body = await c.req.json();
 
-      c.status(201);
-      return c.json({
-        message: "Product updated successfully!",
-        statusCode: 201,
-        data: {},
+      const updatedOrder = await prisma.order.update({
+        where: { id },
+        data: { status: body.status },
       });
+      log(updatedOrder);
+
+      return c.json(
+        {
+          message: "Product updated successfully!",
+          statusCode: 201,
+          data: { updatedOrder },
+        },
+        201
+      );
     } catch (error: any) {
       c.status(500);
       c.json({ message: error.message, statusCode: 500, data: null });
     }
   })
-  // ADMIN OR USER CAN DELETE USER
-  .delete("/products/:id", async (c) => {
+  // ADMIN OR USER CAN DELETE ORDER
+  .delete("/order/:id", async (c) => {
     try {
       const id = c.req.param("id");
 
-      const deletedProduct = await prisma.product.delete({ where: { id: id } });
-      log(deletedProduct);
+      const deletedOrder = await prisma.order.delete({ where: { id: id } });
+      log(deletedOrder);
 
-      c.status(200);
-      return c.json({
-        message: "Product deleted successfully!",
-        statusCode: 201,
-        data: { deletedProduct },
-      });
+      return c.json(
+        {
+          message: "Order deleted successfully!",
+          statusCode: 200,
+          data: { deletedOrder },
+        },
+        200
+      );
     } catch (error: any) {
       log(error);
-      c.status(500);
-      c.json({ message: error.message, statusCode: 500, data: null });
+      c.json({ message: error.message, statusCode: 500, data: null }, 500);
     }
   })
   // LET SELLER SEE THEIR ITEMS THAT ARE PART OF ORDERS
