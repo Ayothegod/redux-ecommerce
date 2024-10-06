@@ -27,12 +27,14 @@ const authRoute = auth
         where: { email: result.data.email },
       });
       if (userExists) {
-        c.status(400);
-        return c.json({
-          message: "User already exists, please login instead!",
-          statusCode: 400,
-          data: null,
-        });
+        return c.json(
+          {
+            message: "User already exists, please login instead!",
+            statusCode: 400,
+            data: null,
+          },
+          400
+        );
       }
 
       const hashedPassword = await hashPassword(result.data?.password);
@@ -48,6 +50,11 @@ const authRoute = auth
         },
       });
       log(user);
+
+      const userRes = {
+        email: user.email,
+        role: user.accountType,
+      };
 
       // Generate a token (JWT)
       const accessToken = generateAccessToken(user);
@@ -71,12 +78,14 @@ const authRoute = auth
       // }
       // log(mailRes)
 
-      c.status(201);
-      return c.json({
-        message: "User registered successfully!",
-        statusCode: 201,
-        data: { accessToken, refreshToken },
-      });
+      return c.json(
+        {
+          message: "User registered successfully!",
+          statusCode: 201,
+          data: { accessToken, refreshToken, userRes },
+        },
+        201
+      );
     } catch (error: any) {
       log(error);
       c.status(400);
