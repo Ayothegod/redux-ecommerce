@@ -9,10 +9,10 @@ import {
   RegisterResponse,
 } from "./types";
 import { RootState } from "@/store";
-
+//http://localhost:6000/api/v1/auth/login
 export const authApi = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:6000/api/v1/",
+    baseUrl: "http://localhost:3000/api/v1/",
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token;
       if (token) {
@@ -68,12 +68,14 @@ const authSlice = createSlice({
 
         state.token = payload.data?.accessToken;
         state.user = {
-          id: payload.data.user.id,
-          email: payload.data.user.email,
-          role: payload.data.user.accountType,
+          id: payload.data.userRes.id,
+          email: payload.data.userRes.email,
+          role: payload.data.userRes.accountType,
         };
+        const user = payload.data.userRes;
+
         sessionStorage.setItem("isAuthenticated", "true");
-        sessionStorage.setItem("user", `${JSON.stringify(payload)}`);
+        sessionStorage.setItem("user", `${JSON.stringify(user)}`);
         return state;
       }
     );
@@ -84,12 +86,18 @@ const authSlice = createSlice({
 
         state.token = payload.data?.accessToken;
         state.user = {
-          id: payload.data.user.id,
-          email: payload.data.user.email,
-          role: payload.data.user.accountType,
+          id: payload.data?.userRes.id,
+          email: payload.data?.userRes.email,
+          role: payload.data?.userRes.accountType,
         };
+
+        const user = payload.data?.userRes;
         sessionStorage.setItem("isAuthenticated", "true");
-        sessionStorage.setItem("user", `${JSON.stringify(payload)}`);
+        sessionStorage.setItem("user", `${JSON.stringify(user)}`);
+        sessionStorage.setItem(
+          "token",
+          `${JSON.stringify(payload.data?.accessToken)}`
+        );
         return state;
       }
     );

@@ -6,7 +6,7 @@ export interface LoginRequest {
 export interface RegisterRequest {
   firstName: string;
   lastName: string;
-  accountType: "SHOPPER" | "SELLER" | "ADMIN";
+  accountType: string;
   email: string;
   password: string;
 }
@@ -28,8 +28,8 @@ export interface RegisterResponse {
   data: {
     accessToken: string;
     refreshToken: string;
-    user: UserResponse;
-  }
+    userRes: UserResponse;
+  };
 }
 
 export interface LoginResponse {
@@ -38,7 +38,7 @@ export interface LoginResponse {
   data: {
     accessToken: string;
     refreshToken: string;
-    user: UserResponse;
+    userRes: UserResponse;
   };
 }
 
@@ -54,10 +54,5 @@ export interface LogOutResponse {
 export interface UserResponse {
   id: string;
   email: string;
-  firstname: string;
-  lastName: string;
-  accountType: "SHOPPER" | "SELLER" | "ADMIN";
-  password: string;
-  createdAt: Date;
-  updatedAt: Date;
+  accountType: string;
 }
