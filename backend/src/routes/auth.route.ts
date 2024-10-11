@@ -15,6 +15,7 @@ const authRoute = auth
   .post("/register", async (c) => {
     try {
       const body = await c.req.json();
+      log(body);
 
       const result = await registrationSchema.safeParse(body);
       if (result.error) {
@@ -52,6 +53,7 @@ const authRoute = auth
       log(user);
 
       const userRes = {
+        id: user.id,
         email: user.email,
         role: user.accountType,
       };
@@ -60,23 +62,6 @@ const authRoute = auth
       const accessToken = generateAccessToken(user);
       const refreshToken = generateRefreshToken(user);
       console.log(accessToken, refreshToken);
-
-      // Send welcome mail
-      // const registerMailOptions = {
-      //   from: {
-      //     name: "Paxx Finance",
-      //     address: process.env.SENDER_ADDRESS,
-      //   },
-      //   to: [`${user.email}`],
-      //   subject: "Welcome to Paxx Finance – Secure Your Financial Future!",
-      //   html: `<div><p>Hi ${user.name},</p><p>Welcome to <strong>Paxx Finance</strong> – we’re thrilled to have you on board! 🚀</p><p>By joining us, you’re now part of a platform built to help you manage your crypto finances securely and effectively.</p><p>If you have any questions or need assistance, feel free to reply to this email.<p><p>Thanks for joining us!</p><p>Best regards,<br>  The <strong>Paxx</strong> Team</p></div>`,
-      // };
-      // const mailRes = await sendMail(registerMailOptions);
-      // if (!mailRes) {
-      //   c.status(400);
-      //   c.json({ message: "Error! failed to deliever welcome mail." });
-      // }
-      // log(mailRes)
 
       return c.json(
         {

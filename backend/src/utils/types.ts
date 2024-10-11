@@ -8,5 +8,5 @@ export type UserType = {
   password: string;
   createdAt: Date;
   updatedAt: Date;
-  accountType: "SELLER" | "SHOPPER" | "ADMIN";
+  accountType: string
 } | null;
