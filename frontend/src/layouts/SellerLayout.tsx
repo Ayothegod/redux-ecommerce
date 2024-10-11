@@ -7,11 +7,11 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 export function SellerLayout() {
   const location = useLocation();
   const path = location.pathname;
-  console.log(path);
+  // console.log(path);
 
   return (
     <div className="">
-      <section className="max-w-7xl mx-auto flex">
+      <section className="max-w-7x mx-auto flex">
         {/* DESKTOP-SIDEBAR */}
         <div className="hidden md:sticky h-screen md:top-0 md:flex md:w-[240px] border flex-shrink-0 px-2 py-4">
           <div className="w-full h-screen space-y-4">
@@ -41,7 +41,9 @@ export function SellerLayout() {
 
         <div className="w-full bg-neutral-500 min-h-full flex-grow">
           <TopBar />
-          <Outlet />
+          <div className="px-3 font-space-grotesk">
+            <Outlet />
+          </div>
         </div>
       </section>
     </div>

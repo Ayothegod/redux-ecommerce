@@ -3,6 +3,7 @@ import { Root, RootError, Loader as rootLoader } from "./routes/root";
 import { RootLayout } from "./layouts/RootLayout";
 import { SellerLayout } from "./layouts/SellerLayout";
 import { Dashboard as SellerDashboard } from "./routes/seller/dashboard";
+import { Login } from "./routes/auth/login";
 
 // NOTE: make sure to add errorBoundary to all routes that throw error from loader and actions
 const router = createBrowserRouter([
@@ -12,11 +13,11 @@ const router = createBrowserRouter([
     errorElement: <RootError />,
     loader: rootLoader,
   },
-  // {
-  //   path: "/auth",
-  //   element: <Auth />,
-  //   errorElement: <RootError />,
-  // },
+  {
+    path: "/login",
+    element: <Login />,
+    errorElement: <RootError />,
+  },
   // {
   //   path: "/onboarding",
   //   element: <Onboarding />,

@@ -1,3 +1,5 @@
 export function Dashboard() {
-  return <div>Dashboard</div>;
+  return <div>
+    lorem10000
+  </div>;
 }
