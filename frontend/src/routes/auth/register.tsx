@@ -1,53 +1,73 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRegisterMutation } from "@/services/auth/authSlice";
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import { registrationSchema } from "@/lib/schema";
+// import { AuthState } from "@/services/auth/types";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Label } from "@/components/ui/label";
+import { Loader2 } from "lucide-react";
+
+type RegisterSchemaType = z.infer<typeof registrationSchema>;
 
 export function Register({ isAuthenticated }: { isAuthenticated: boolean }) {
-  const [register] = useRegisterMutation();
+  const [register, { isLoading }] = useRegisterMutation();
+  const { toast } = useToast();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    accountType: "",
-    email: "",
-    password: "",
+  const {
+    register: registerInput,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterSchemaType>({
+    resolver: zodResolver(registrationSchema),
   });
 
-  // const submit = async (e: any) => {
-  //   e.preventDefault();
-  //   console.log(formData)
-  //   try {
-  //     const res = await fetch("http://localhost:3000/api/v1/auth/register", {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       method: "POST",
-  //       body: JSON.stringify(formData),
-  //     });
-  //     const response = await res.json();
-
-  //     console.log(response);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-  const submit = async (e: any) => {
-    e.preventDefault();
+  const onSubmit = async (data: RegisterSchemaType) => {
     try {
-      const res = await register(formData);
-      console.log(res.data);
+      const response = await register(data).unwrap();
+      console.log(response);
 
-      return;
-    } catch (err) {
-      console.log(err);
-      return;
+      toast({
+        title: `Welcome back, ${response.data.userRes.accountType}`,
+        description: ``,
+      });
+      return null;
+      return navigate("/login");
+    } catch (error: any) {
+      console.log({ error });
+
+      if (error.data) {
+        toast({
+          variant: "destructive",
+          description: `${error.data.message}`,
+        });
+        return;
+      }
+
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        });
+        return null;
+      }
     }
   };
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, navigate]);
+
   if (isAuthenticated) {
-    return <div>User session already exists</div>;
+    return null;
   }
 
   return (
@@ -57,88 +77,73 @@ export function Register({ isAuthenticated }: { isAuthenticated: boolean }) {
         <label htmlFor="" className="text-sm">
           Create an account
         </label>
-        <form onSubmit={submit}>
+        <form o onSubmit={handleSubmit(onSubmit)}>
           <div className="border w-full mt-4 rounded-md p-2 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium">First Name</label>
-              <input
+              <Input
                 type="text"
-                className="border"
                 placeholder="John"
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    firstName: e.target.value,
-                  })
-                }
+                {...registerInput("firstName")}
               />
+              {errors.firstName && (
+                <Label className="text-xs text-red-500">
+                  {errors.firstName?.message}
+                </Label>
+              )}
             </div>
 
             {/* Second input */}
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium">Last Name</label>
-              <input
+              <Input
                 type="text"
                 placeholder="Doe"
-                className="border"
-                value={formData.lastName}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    lastName: e.target.value,
-                  })
-                }
+                {...registerInput("lastName")}
               />
+              {errors.lastName && (
+                <Label className="text-xs text-red-500">
+                  {errors.lastName?.message}
+                </Label>
+              )}
             </div>
 
             {/* Third input */}
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium">Email Address</label>
-              <input
+              <Input
                 type="email"
-                placeholder="Doe"
+                placeholder="Example@gmail.com"
                 className="border"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    email: e.target.value,
-                  })
-                }
+                {...registerInput("email")}
               />
+              {errors.email && (
+                <Label className="text-xs text-red-500">
+                  {errors.email?.message}
+                </Label>
+              )}
             </div>
 
             {/* Fourth input */}
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium">Password</label>
-              <input
+              <Input
                 type="password"
-                placeholder="Doe"
+                placeholder="Enter your password..."
                 className="border"
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    password: e.target.value,
-                  })
-                }
+                {...registerInput("password")}
               />
+              {errors.password && (
+                <Label className="text-xs text-red-500">
+                  {errors.password?.message}
+                </Label>
+              )}
             </div>
 
             {/* Fifth input */}
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium">Account Type</label>
-              <select
-                id="accountType"
-                name="accountType"
-                value={formData.accountType}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    accountType: e.target.value,
-                  })
-                }
-              >
+              <select id="accountType" name="accountType">
                 <option value="" disabled>
                   Are you a shopper or seller?
                 </option>
@@ -155,12 +160,13 @@ export function Register({ isAuthenticated }: { isAuthenticated: boolean }) {
               <a href="/terms-and-conditions">Terms and Conditions</a>
             </label>
           </div>
-          <button type="submit" className="border  p-2">
-            Sign Up
+          <button type="submit" className="w-full">
+            {isLoading ? <Loader2 className="animate-spin" /> : "Sign Up"}
           </button>
         </form>
 
         <div className="flex items-center gap-4 text-sm">
+          {" "}
           <label htmlFor="login">Already have an account?</label>
           <Link
             to="/auth/login"

@@ -20,7 +20,7 @@ const authRoute = auth
       const result = await registrationSchema.safeParse(body);
       if (result.error) {
         const errorMessages = result.error.issues.map((issue) => issue.message);
-        return c.json({ message: errorMessages.join(", ") });
+        return c.json({ message: errorMessages.join(", ")}, 400);
       }
 
       // check if user exist
@@ -84,8 +84,10 @@ const authRoute = auth
       const result = await loginSchema.safeParse(body);
       if (result.error) {
         const errorMessages = result.error.issues.map((issue) => issue.message);
-        c.status(400);
-        return c.json({ statusCode: 400, message: errorMessages.join(", ") });
+        return c.json(
+          { statusCode: 400, message: errorMessages.join(", ") },
+          400
+        );
       }
 
       // check if user exist
@@ -93,12 +95,14 @@ const authRoute = auth
         where: { email: result.data.email },
       });
       if (!user) {
-        c.status(400);
-        return c.json({
-          message: "User not found, please signup instead.",
-          statusCode: 400,
-          data: null,
-        });
+        return c.json(
+          {
+            message: "User not found, please signup instead.",
+            statusCode: 400,
+            data: null,
+          },
+          400
+        );
       }
 
       // Check password
