@@ -65,30 +65,12 @@ const authSlice = createSlice({
       authApi.endpoints.login.matchFulfilled,
       (state, { payload }) => {
         console.log("Login done");
-
-        state.token = payload.data?.accessToken;
-        state.user = {
-          id: payload.data.userRes.id,
-          email: payload.data.userRes.email,
-          role: payload.data.userRes.accountType,
-        };
-        const user = payload.data.userRes;
-
-        sessionStorage.setItem("isAuthenticated", "true");
-        sessionStorage.setItem("user", `${JSON.stringify(user)}`);
-        return state;
-      }
-    );
-    builder.addMatcher(
-      authApi.endpoints.register.matchFulfilled,
-      (state, { payload }) => {
-        console.log("Register done");
-
+        
         state.token = payload.data?.accessToken;
         state.user = {
           id: payload.data?.userRes.id,
           email: payload.data?.userRes.email,
-          role: payload.data?.userRes.accountType,
+          accountType: payload.data?.userRes.accountType,
         };
 
         const user = payload.data?.userRes;
@@ -98,6 +80,29 @@ const authSlice = createSlice({
           "token",
           `${JSON.stringify(payload.data?.accessToken)}`
         );
+        console.log("Login done");
+        return state;
+      }
+    );
+    builder.addMatcher(
+      authApi.endpoints.register.matchFulfilled,
+      (state, { payload }) => {
+        
+        state.token = payload.data?.accessToken;
+        state.user = {
+          id: payload.data?.userRes.id,
+          email: payload.data?.userRes.email,
+          accountType: payload.data?.userRes.accountType,
+        };
+
+        const user = payload.data?.userRes;
+        sessionStorage.setItem("isAuthenticated", "true");
+        sessionStorage.setItem("user", `${JSON.stringify(user)}`);
+        sessionStorage.setItem(
+          "token",
+          `${JSON.stringify(payload.data?.accessToken)}`
+        );
+        console.log("Register done");
         return state;
       }
     );

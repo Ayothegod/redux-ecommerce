@@ -80,6 +80,7 @@ const authRoute = auth
   .post("login", async (c) => {
     try {
       const body = await c.req.json();
+      log(body);
 
       const result = await loginSchema.safeParse(body);
       if (result.error) {
@@ -124,16 +125,20 @@ const authRoute = auth
       const refreshToken = generateRefreshToken(user);
       console.log(accessToken, refreshToken);
 
-      c.status(200);
+      const userRes = {
+        id: user.id,
+        email: user.email,
+        accountType: user.accountType,
+      };
+
       return c.json({
         message: "Login successful!",
         statusCode: 200,
-        data: { accessToken, refreshToken },
-      });
+        data: { accessToken, refreshToken, userRes },
+      }, 200);
     } catch (error: any) {
       log(error);
-      c.status(500);
-      c.json({ message: error.message, statusCode: 500, data: null });
+      c.json({ message: error.message, statusCode: 500, data: null }, 500);
     }
   })
   .delete("logout", async (c) => {

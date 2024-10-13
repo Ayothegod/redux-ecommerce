@@ -12,15 +12,16 @@ import { z } from "zod";
 import { Label } from "@/components/ui/label";
 import { useLoginMutation } from "@/services/auth/authSlice";
 import { Loader2 } from "lucide-react";
+import { AuthState } from "@/services/auth/types";
 
 type LoginSchemaType = z.infer<typeof loginSchema>;
 
 export function Login({
   isAuthenticated,
-}: // authState,
-{
+  authState,
+}: {
   isAuthenticated: boolean;
-  // authState: AuthState;
+  authState: AuthState;
 }) {
   const [login, { isLoading }] = useLoginMutation();
   const { toast } = useToast();
@@ -40,8 +41,11 @@ export function Login({
         title: `Welcome back, ${response.data.userRes.accountType}`,
         description: ``,
       });
-      return null;
-      return navigate("/login");
+
+      if (response.data.userRes.accountType === "SELLER") {
+        return navigate("/seller/dashboard");
+      }
+      return navigate("/");
     } catch (error: any) {
       console.log({ error });
 
@@ -66,9 +70,15 @@ export function Login({
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/dashboard");
+      if (authState.user?.accountType === "SHOPPER") {
+        return navigate("/");
+      }
+      if (authState.user?.accountType === "SELLER") {
+        return navigate("/seller/dashboard");
+      }
     }
-  }, [isAuthenticated, navigate]);
+    return;
+  }, [isAuthenticated, navigate, authState.user?.accountType]);
 
   if (isAuthenticated) {
     return null;
@@ -76,11 +86,9 @@ export function Login({
 
   return (
     <div className="bg-white  flex items-center justify-center flex-col flex-1 rounded-md p-4">
-      <div className="px-10 w-1/2">
+      <div className="px-4 md:px-10 w-full sm:w-2/3">
         <h2 className="font-space-grotesk text-3xl">Sign In</h2>
-        <label htmlFor="" className="text-sm">
-          Login to your account
-        </label>
+        <Label htmlFor="">Login to your account</Label>
         <form className="my-10" onSubmit={handleSubmit(onSubmit)}>
           <div className="border px-2 py-4 rounded-md w-full gap-4 md:gap-6 flex  flex-col">
             <div className="flex flex-col gap-2">
@@ -123,7 +131,7 @@ export function Login({
             </div>
             <Link
               to="/auth/login"
-              className="underline underline-offset-2 font-medium text-sm"
+              className="text-blue-600 underline underline-offset-2 font-medium text-sm"
             >
               Forgot Password?
             </Link>
@@ -135,10 +143,10 @@ export function Login({
         </form>
 
         <div className="flex items-center gap-4 text-sm">
-        <label htmlFor="login">Don't have an account?</label>
+          <label htmlFor="login">Don't have an account?</label>
           <Link
             to="/auth/register"
-            className="underline underline-offset-4 font-medium text-sm"
+            className="text-blue-600 underline underline-offset-4 font-medium text-sm"
           >
             Register Instead
           </Link>

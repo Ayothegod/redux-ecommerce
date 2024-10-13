@@ -12,10 +12,17 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
+import { AuthState } from "@/services/auth/types";
 
 type RegisterSchemaType = z.infer<typeof registrationSchema>;
 
-export function Register({ isAuthenticated }: { isAuthenticated: boolean }) {
+export function Register({
+  isAuthenticated,
+  authState,
+}: {
+  isAuthenticated: boolean;
+  authState: AuthState;
+}) {
   const [register, { isLoading }] = useRegisterMutation();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -28,16 +35,21 @@ export function Register({ isAuthenticated }: { isAuthenticated: boolean }) {
   });
 
   const onSubmit = async (data: RegisterSchemaType) => {
+    console.log(data);
+
     try {
       const response = await register(data).unwrap();
       console.log(response);
 
       toast({
-        title: `Welcome back, ${response.data.userRes.accountType}`,
+        title: `Welcome to Ecorn, ${response.data.userRes.accountType}`,
         description: ``,
       });
-      return null;
-      return navigate("/login");
+
+      if (response.data.userRes.accountType === "SELLER") {
+        return navigate("/seller/dashboard");
+      }
+      return navigate("/");
     } catch (error: any) {
       console.log({ error });
 
@@ -62,23 +74,27 @@ export function Register({ isAuthenticated }: { isAuthenticated: boolean }) {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/dashboard");
+      if (authState.user?.accountType === "SHOPPER") {
+        return navigate("/");
+      }
+      if (authState.user?.accountType === "SELLER") {
+        return navigate("/seller/dashboard");
+      }
     }
-  }, [isAuthenticated, navigate]);
+    return;
+  }, [isAuthenticated, navigate, authState.user?.accountType]);
 
   if (isAuthenticated) {
     return null;
   }
 
   return (
-    <div className="bg-white flex flex-1 rounded-md p-4">
-      <div className="px-10 w-full">
+    <div className="bg-white flex flex-1 rounded-md p-4 items-center justify-center">
+      <div className="px-2 md:px-10 w-full sm:w-2/3 md:w-full">
         <h2 className="font-space-grotesk text-2xl">Create an Account</h2>
-        <label htmlFor="" className="text-sm">
-          Create an account
-        </label>
-        <form o onSubmit={handleSubmit(onSubmit)}>
-          <div className="border w-full mt-4 rounded-md p-2 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        <Label htmlFor="">Create an account</Label>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="border w-full mt-4 rounded-md p-2 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-6">
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium">First Name</label>
               <Input
@@ -143,34 +159,42 @@ export function Register({ isAuthenticated }: { isAuthenticated: boolean }) {
             {/* Fifth input */}
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium">Account Type</label>
-              <select id="accountType" name="accountType">
-                <option value="" disabled>
-                  Are you a shopper or seller?
-                </option>
+              <select id="accountType" {...registerInput("accountType")}>
+                <option value="">Are you a shopper or seller?</option>
                 <option value="SHOPPER">SHOPPER</option>
                 <option value="SELLER">SELLER</option>
               </select>
+              {errors.accountType && (
+                <Label className="text-xs text-red-500">
+                  {errors.accountType?.message}
+                </Label>
+              )}
             </div>
           </div>
 
           <div className="flex items-center gap-4 my-5">
             <input type="checkbox" />
-            <label htmlFor="checkbox">
+            <Label htmlFor="checkbox" className="flex items-center gap-2">
               I agree with the
-              <a href="/terms-and-conditions">Terms and Conditions</a>
-            </label>
+              <a
+                href="/terms-and-conditions"
+                className="text-blue-600 underline"
+              >
+                Terms and Conditions
+              </a>
+            </Label>
           </div>
-          <button type="submit" className="w-full">
+          <Button type="submit" className="w-full mt-4 border">
             {isLoading ? <Loader2 className="animate-spin" /> : "Sign Up"}
-          </button>
+          </Button>
         </form>
 
-        <div className="flex items-center gap-4 text-sm">
+        <div className="flex items-center gap-4 text-sm my-4">
           {" "}
           <label htmlFor="login">Already have an account?</label>
           <Link
             to="/auth/login"
-            className="underline underline-offset-4 font-medium text-base"
+            className="text-blue-600 underline underline-offset-4 font-medium text-sm"
           >
             Login Instead
           </Link>

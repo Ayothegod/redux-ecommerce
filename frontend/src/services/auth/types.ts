@@ -14,7 +14,7 @@ export interface RegisterRequest {
 export interface User {
   id: string;
   email: string;
-  role: string;
+  accountType: string;
 }
 
 export type AuthState = {

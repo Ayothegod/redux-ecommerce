@@ -28,7 +28,7 @@ export function App() {
       user: {
         id: response.id,
         email: response.email,
-        role: response.role,
+        accountType: response.accountType,
       },
       token: userToken ?? token,
     };
@@ -52,7 +52,7 @@ export function App() {
         },
         {
           path: "/auth/register",
-          element: <Register isAuthenticated={isAuthenticated} />,
+          element: <Register isAuthenticated={isAuthenticated} authState={authState} />,
           errorElement: <RootError />,
         },
       ],

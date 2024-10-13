@@ -33,6 +33,9 @@ app.options("*", (c) => {
 app.get("/", (c) => {
   return c.json("Hello User, Welcome to paxx.");
 });
+app.get("/api/v1/seller", (c) => {
+  return c.json("This is seller 02");
+});
 app.route("/api/v1/auth", authRoute);
 app.route("/api/v1/products", sellerProductsRoute);
 app.route("/api/v1/orders", productsOrders);
