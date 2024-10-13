@@ -1,10 +1,17 @@
 // import TopBar from "@/components/layout/TopBar";
 import { TopBar } from "@/components/seller/TopBar";
 import { sidebarData } from "@/lib/data";
+import { AuthState } from "@/services/auth/types";
 import clsx from "clsx";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
-export function SellerLayout() {
+export function SellerLayout({
+  isAuthenticated,
+  authState,
+}: {
+  isAuthenticated: boolean;
+  authState: AuthState;
+}) {
   const location = useLocation();
   const path = location.pathname;
   // console.log(path);
@@ -39,8 +46,8 @@ export function SellerLayout() {
           </div>
         </div>
 
-        <div className="w-full bg-neutral-500 min-h-full flex-grow">
-          <TopBar />
+        <div className="w-full bg-neutral-100 min-h-full flex-grow px-4">
+          <TopBar authState={authState} isAuthenticated={isAuthenticated} />
           <div className="px-3 font-space-grotesk">
             <Outlet />
           </div>

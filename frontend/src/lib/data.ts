@@ -8,7 +8,7 @@ export const sidebarData = [
     icon: LayoutDashboard,
   },
   { id: 2, title: "Orders", url: "/Analytics", icon: NotebookPen },
-  { id: 3, title: "Products", url: "/Accounts", icon: SquareChartGantt },
+  { id: 3, title: "Products", url: "/seller/products", icon: SquareChartGantt },
   { id: 4, title: "Customers", url: "/Accounts", icon: Users },
   { id: 5, title: "Messages", url: "/Accounts", icon: MessageSquare },
   { id: 6, title: "Settings", url: "/Accounts", icon: Settings },

@@ -8,6 +8,7 @@ import { Root, RootError, Loader as rootLoader } from "./routes/root";
 import { Dashboard as SellerDashboard } from "./routes/seller/dashboard";
 import { AuthState } from "./services/auth/types";
 import { useAppSelector } from "./store";
+import { SellerProducts } from "./routes/seller/products";
 
 export function App() {
   let authState: AuthState = {
@@ -58,11 +59,15 @@ export function App() {
       ],
     },
     {
-      element: <SellerLayout />,
+      element: <SellerLayout authState={authState} isAuthenticated={isAuthenticated} />,
       children: [
         {
           path: "/seller/dashboard",
           element: <SellerDashboard />,
+        },
+        {
+          path: "/seller/products",
+          element: <SellerProducts />,
         },
       ],
     },
