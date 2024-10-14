@@ -60,15 +60,12 @@ export const productSchema = z.object({
   description: z
     .string({ required_error: "Description is required" })
     .min(3, { message: "Description must be at least 3 characters long" }),
-  imageUrl: z.string().optional(),
+  // imageUrl: z.string(),
   price: z.coerce
     .number({ required_error: "Price is required" })
     .min(1, "Enter the price for this product"),
   category: CategoryType,
-  tags: z.array(z.string()),
-  sellerId: z
-    .string({ required_error: "sellerId is required" })
-    .min(3, { message: "sellerId must be at least 3 characters long" }),
+  // tags: z.array(z.string()),
 });
 
 export const updateProductSchema = z.object({
@@ -99,4 +96,40 @@ export const orderItem = z.object({
   status: OrderItemStatus,
 });
 
-export type OrderItem = z.infer<typeof orderItem>
+export type OrderItem = z.infer<typeof orderItem>;
+
+// const [file, setFile] = useState("");
+// const [image, setImage] = useState<any>("");
+// const [uploadedImage, setUploadedImage] = useState("");
+
+// function previewFiles(file: any) {
+//   const reader = new FileReader();
+//   reader.readAsDataURL(file);
+
+//   reader.onloadend = () => {
+//     setImage(reader.result);
+//   };
+// }
+
+// const handleFormChange = (e: any) => {
+//   const file = e.target.files[0];
+//   setFile(file);
+//   previewFiles(file);
+// };
+
+// const onSubmit = async (e: any) => {
+//   e.preventDefault();
+//   const result = await axios.post(
+//     "http://localhost:3000/api/v1/products/product",
+//     {
+//       image: image,
+//     }
+//   );
+//   try {
+//     console.log(result.data.data.uploadResult.public_id);
+//     const uploadedImage = result.data.data.uploadResult.public_id;
+//     setUploadedImage(uploadedImage);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };

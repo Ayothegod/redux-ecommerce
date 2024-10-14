@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { HandleImage } from "@/components/seller/HandleImage";
+// import { HandleImage } from "@/components/seller/HandleImage";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import axios from "axios";
-import { Loader2, StepBack } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -11,14 +10,14 @@ import { z } from "zod";
 import { productSchema } from "@/lib/schema";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { useLoginMutation } from "@/services/auth/authSlice";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useCreateProductMutation } from "@/services/products/productSlice";
 
 type ProductSchemaType = z.infer<typeof productSchema>;
 
 export function SellerCreateProduct() {
-  const [login, { isLoading }] = useLoginMutation();
+  const [createProduct, { isLoading }] = useCreateProductMutation();
   const { toast } = useToast();
   const navigate = useNavigate();
   const {
@@ -27,9 +26,9 @@ export function SellerCreateProduct() {
     formState: { errors },
   } = useForm<ProductSchemaType>({ resolver: zodResolver(productSchema) });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [file, setFile] = useState("");
   const [image, setImage] = useState<any>("");
-  const [uploadedImage, setUploadedImage] = useState("");
 
   const fileInputRef: any = useRef(null);
   const handleFileClick = () => {
@@ -56,59 +55,36 @@ export function SellerCreateProduct() {
     }
   };
 
-  const uploadImage = async (e: any) => {
-    e.preventDefault();
-    const result = await axios.post(
-      "http://localhost:3000/api/v1/products/product",
-      {
-        image: image,
-      }
-    );
-    try {
-      console.log(result.data.data.uploadResult.public_id);
-      const uploadedImage = result.data.data.uploadResult.public_id;
-      setUploadedImage(uploadedImage);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const onSubmit = async (data: ProductSchemaType) => {
-    console.log(data);
+    const body = { ...data, image };
+    try {
+      const response = await createProduct(body).unwrap();
+      console.log({ response });
 
-    // try {
-    //   const response = await login(data).unwrap();
-    //   console.log(response);
+      toast({
+        title: `Product created successfully`,
+      });
+      return null;
+      return navigate("/");
+    } catch (error: any) {
+      console.log({ error });
 
-    //   toast({
-    //     title: `Welcome back, ${response.data.userRes.accountType}`,
-    //     description: ``,
-    //   });
+      if (error.data) {
+        return toast({
+          variant: "destructive",
+          description: `${error.data.message}`,
+        });
+      }
 
-    //   if (response.data.userRes.accountType === "SELLER") {
-    //     return navigate("/seller/dashboard");
-    //   }
-    //   return navigate("/");
-    // } catch (error: any) {
-    //   console.log({ error });
-
-    //   if (error.data) {
-    //     toast({
-    //       variant: "destructive",
-    //       description: `${error.data.message}`,
-    //     });
-    //     return;
-    //   }
-
-    //   if (error) {
-    //     toast({
-    //       variant: "destructive",
-    //       title: "Uh oh! Something went wrong.",
-    //       description: "There was a problem with your request.",
-    //     });
-    //     return null;
-    //   }
-    // }
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        });
+        return null;
+      }
+    }
   };
 
   return (
@@ -158,7 +134,7 @@ export function SellerCreateProduct() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-2 w-full">
+            {/* <div className="flex flex-col gap-2 w-full">
               <label className="text-sm font-medium">Tags</label>
               <Input
                 type="text"
@@ -171,7 +147,7 @@ export function SellerCreateProduct() {
                   {errors.category?.message}
                 </Label>
               )}
-            </div>
+            </div> */}
           </div>
 
           <div className="border p-2 rounded-md w-1/2 flex flex-col gap-4">
@@ -180,7 +156,7 @@ export function SellerCreateProduct() {
               <Input
                 type="text"
                 placeholder="Urban Family Center Table"
-                required
+                // required
                 {...register("name")}
               />
               {errors.name && (
@@ -195,7 +171,7 @@ export function SellerCreateProduct() {
               <Input
                 type="text"
                 placeholder="Table"
-                required
+                // required
                 {...register("category")}
               />
               {errors.category && (
@@ -210,7 +186,7 @@ export function SellerCreateProduct() {
               <Input
                 type="number"
                 placeholder="$140"
-                required
+                // required
                 {...register("price")}
               />
               {errors.price && (
@@ -225,7 +201,7 @@ export function SellerCreateProduct() {
               <Textarea
                 placeholder="Very long product description..."
                 className="h-32 resize-none"
-                required
+                // required
                 {...register("description")}
               />
               {errors.description && (

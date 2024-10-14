@@ -74,7 +74,7 @@ export const productSchema = z.object({
 export const updateProductSchema = z.object({
   name: z.string().optional(),
   description: z.string().optional(),
-  imageUrl: z.string().optional(),
+  imageUrl: z.string(),
   price: z.coerce.number().optional(),
   category: CategoryType,
   tags: z.array(z.string()).optional(),

@@ -58,68 +58,54 @@ const sellerProductsRoute = auth
       c.json({ message: error.message, statusCode: 500, data: null });
     }
   })
-  .post("/product", async (c) => {
+  .post("/product", authMiddleware("SELLER"), async (c) => {
     try {
       const body = await c.req.json();
-      // public_id: `${product.title}-imae`,
-      // public_id: `product-image`,
 
-      const uploadResult = await cloudinary.uploader
+      const result = await productSchema.safeParse(body);
+      if (result.error) {
+        const errorMessages = result.error.issues.map((issue) => issue.message);
+        return c.json({ message: errorMessages.join(", ") });
+      }
+
+      const uploadResult: any = await cloudinary.uploader
         .upload(body.image, {
           upload_preset: "unsigned_upload",
+          public_id: `${result.data.name}-image`,
           allowed_formats: ["png", "jpg", "svg", "ico", "jfif", "webp"],
         })
         .catch((error) => {
           console.log(error);
+          c.json(
+            {
+              message: "Failed to upload product image",
+              statusCode: 404,
+              data: null,
+            },
+            404
+          );
         });
+      // console.log(uploadResult);
 
-      console.log(uploadResult);
+      const sellerDetails: any = c.get("user");
 
-      // // Optimize delivery by resizing and applying auto-format and auto-quality
-      // const optimizeUrl = cloudinary.url("shoes", {
-      //   fetch_format: "auto",
-      //   quality: "auto",
-      // });
-
-      // console.log(optimizeUrl);
-
-      // // Transform the image: auto-crop to square aspect_ratio
-      // const autoCropUrl = cloudinary.url("shoes", {
-      //   crop: "auto",
-      //   gravity: "auto",
-      //   width: 500,
-      //   height: 500,
-      // });
-
-      // console.log(autoCropUrl);
-
-      // const result = await productSchema.safeParse(body);
-      // if (result.error) {
-      //   const errorMessages = result.error.issues.map((issue) => issue.message);
-      //   return c.json({ message: errorMessages.join(", ") });
-      // }
-
-      // const sellerDetails: any = c.get("user");
-
-      // const product = await prisma.product.create({
-      //   data: {
-      //     name: result.data.name,
-      //     description: result.data.description,
-      //     price: result.data.price,
-      //     sellerId: sellerDetails.id,
-      //     category: result.data.category,
-      //     tags: ["car"],
-      //     imageUrl: result.data.imageUrl || "",
-      //   },
-      // });
-
-      // log(product);
+      const product = await prisma.product.create({
+        data: {
+          name: result.data.name,
+          description: result.data.description,
+          price: result.data.price,
+          sellerId: sellerDetails.id,
+          category: result.data.category,
+          imageUrl: uploadResult.public_id,
+        },
+      });
+      log(product)
 
       return c.json(
         {
           message: "Product registered successfully!",
           statusCode: 201,
-          data: { uploadResult },
+          data: { imagePublicId: uploadResult.public_id, name: product.name },
         },
         201
       );

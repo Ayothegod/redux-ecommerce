@@ -3,14 +3,6 @@ export interface LoginRequest {
   password: string;
 }
 
-export interface RegisterRequest {
-  firstName: string;
-  lastName: string;
-  accountType: string;
-  email: string;
-  password: string;
-}
-
 export interface User {
   id: string;
   email: string;
@@ -21,6 +13,14 @@ export type AuthState = {
   user: User | null;
   token: string | null;
 };
+
+export interface RegisterRequest {
+  firstName: string;
+  lastName: string;
+  accountType: string;
+  email: string;
+  password: string;
+}
 
 export interface RegisterResponse {
   message: string;
