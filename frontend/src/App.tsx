@@ -68,7 +68,7 @@ export function App() {
         },
         {
           path: "/seller/products",
-          element: <SellerProducts />,
+          element: <SellerProducts  authState={authState} />,
         },
         {
           path: "/seller/products/new",

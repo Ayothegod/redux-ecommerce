@@ -20,10 +20,16 @@ const sellerProductsRoute = auth
       userDetails,
     });
   })
-  .get("/products", async (c) => {
+  .get("/:sellerId/products", authMiddleware("SELLER"), async (c) => {
     try {
-      const products = await prisma.product.findMany({});
-      log(products);
+      const sellerId = c.req.param("sellerId");
+
+      const products = await prisma.product.findMany({
+        where: {
+          sellerId: sellerId,
+        },
+      });
+      // log(products);
 
       c.status(200);
       return c.json({
@@ -97,9 +103,17 @@ const sellerProductsRoute = auth
           sellerId: sellerDetails.id,
           category: result.data.category,
           imageUrl: uploadResult.public_id,
+          tags: {
+            create: body.tags.map((tag: string) => ({
+              name: tag,
+            })),
+          },
+        },
+        include: {
+          tags: true,
         },
       });
-      log(product)
+      // log(product);
 
       return c.json(
         {

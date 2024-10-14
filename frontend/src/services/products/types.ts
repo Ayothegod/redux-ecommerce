@@ -1,40 +1,18 @@
-export interface BlogModel {
+export interface productModel {
   id: number;
-  authorId: number;
-  authorUserName: string;
-  title: string;
-  content: string;
+  name: number;
+  description: string;
+  imageUrl: string;
+  category: string;
+  sellerId: string;
+  price: number;
+  tags: string[];
   createdAt: Date;
   updatedAt: Date;
 }
 
-export type AllBlogPostResponse = {
-  message: string;
-  status: number;
-  ok: boolean;
-  posts: BlogModel[];
-};
-
-export interface BlogDeleteRequest {
-  id: number;
-  title: string;
-}
-
-export interface BlogUpdateRequest extends BlogDeleteRequest {
-  content: string;
-}
-
-export interface BlogCreateRequest {
-  title: string | null;
-  content: string | null;
-}
-
-export interface BlogResponse {
-  message?: string;
-  status?: number;
-  ok?: boolean;
-  error?: string;
-  reason?: string;
+export interface GetProductsResponse {
+  products: productModel[];
 }
 
 export interface CreateProductRequest {
@@ -43,6 +21,7 @@ export interface CreateProductRequest {
   imageUrl?: string | undefined;
   price: number;
   category: string;
+  tags?: string[];
 }
 
 export interface CreateProductResponse {
