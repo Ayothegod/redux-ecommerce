@@ -9,6 +9,7 @@ import { Dashboard as SellerDashboard } from "./routes/seller/dashboard";
 import { AuthState } from "./services/auth/types";
 import { useAppSelector } from "./store";
 import { SellerProducts } from "./routes/seller/products";
+import { SellerCreateProduct } from "./routes/seller/CreateProduct";
 
 export function App() {
   let authState: AuthState = {
@@ -68,6 +69,10 @@ export function App() {
         {
           path: "/seller/products",
           element: <SellerProducts />,
+        },
+        {
+          path: "/seller/products/new",
+          element: <SellerCreateProduct />,
         },
       ],
     },

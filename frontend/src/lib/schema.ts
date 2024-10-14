@@ -50,7 +50,7 @@ export const resetPasswordSchema = z.object({
 });
 
 const CategoryType = z.enum(["TABLE", "CHAIR", "COVER"], {
-  message: "it can only be SELLER or SHOPPER",
+  message: "it can only be TABLE, COVER or CHAIR",
 });
 
 export const productSchema = z.object({
@@ -65,11 +65,11 @@ export const productSchema = z.object({
     .number({ required_error: "Price is required" })
     .min(1, "Enter the price for this product"),
   category: CategoryType,
-  tags: z.array(z.string()),
-  sellerId: z
-    .string({ required_error: "sellerId is required" })
-    .min(3, { message: "sellerId must be at least 3 characters long" }),
+  // tags: z.array(z.string()),
 });
+// sellerId: z
+//   .string({ required_error: "sellerId is required" })
+//   .min(3, { message: "sellerId must be at least 3 characters long" }),
 
 export const updateProductSchema = z.object({
   name: z.string().optional(),
@@ -99,4 +99,4 @@ export const orderItem = z.object({
   status: OrderItemStatus,
 });
 
-export type OrderItem = z.infer<typeof orderItem>
+export type OrderItem = z.infer<typeof orderItem>;

@@ -39,8 +39,8 @@ export function TopBar({
               <AvatarFallback>CN</AvatarFallback>
             </Avatar> */}
             <aside>
-              <p className="font-semibold font-space-grotesk leading-3">
-                Hello, {authState.user?.email}
+              <p className="font-semibold leading-3">
+                {authState.user?.email}
               </p>
               <Label className="font-light">Seller Account</Label>
             </aside>

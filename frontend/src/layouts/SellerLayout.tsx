@@ -3,7 +3,8 @@ import { TopBar } from "@/components/seller/TopBar";
 import { sidebarData } from "@/lib/data";
 import { AuthState } from "@/services/auth/types";
 import clsx from "clsx";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 export function SellerLayout({
   isAuthenticated,
@@ -13,8 +14,26 @@ export function SellerLayout({
   authState: AuthState;
 }) {
   const location = useLocation();
+  const navigate = useNavigate();
+
   const path = location.pathname;
   // console.log(path);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      return navigate("/auth/login");
+    }
+    if (isAuthenticated) {
+      if (authState.user?.accountType === "SHOPPER") {
+        return navigate("/");
+      }
+    }
+    return;
+  }, [isAuthenticated, navigate, authState.user?.accountType]);
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className="">
@@ -48,7 +67,7 @@ export function SellerLayout({
 
         <div className="w-full bg-neutral-100 min-h-full flex-grow px-4">
           <TopBar authState={authState} isAuthenticated={isAuthenticated} />
-          <div className="px-3 font-space-grotesk">
+          <div className="md:px-3">
             <Outlet />
           </div>
         </div>
