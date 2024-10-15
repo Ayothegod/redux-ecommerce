@@ -1,3 +1,5 @@
+import { FeaturedCategory } from "@/components/base/FeaturedCategory";
+import { Footer } from "@/components/base/Footer";
 import { Header } from "@/components/base/Header";
 import { Hero } from "@/components/base/Hero";
 import { Info } from "@/components/base/Info";
@@ -14,6 +16,8 @@ export function Root() {
       </section>
 
       <Info />
+      <FeaturedCategory/>
+      <Footer/>
     </div>
   );
 }

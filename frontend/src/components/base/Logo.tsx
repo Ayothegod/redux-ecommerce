@@ -1,6 +1,8 @@
-
-export function Logo() {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export function Logo({ className }: any) {
   return (
-    <div>Logo</div>
-  )
+    <div className={`text-white text-2xl font-bold font-space-grotesk ${className}`}>
+      Logo
+    </div>
+  );
 }
