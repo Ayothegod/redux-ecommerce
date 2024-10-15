@@ -1,4 +1,11 @@
-import { LayoutDashboard, MessageSquare, NotebookPen, Settings, SquareChartGantt, Users } from "lucide-react";
+import {
+  LayoutDashboard,
+  MessageSquare,
+  NotebookPen,
+  Settings,
+  SquareChartGantt,
+  Users,
+} from "lucide-react";
 
 export const sidebarData = [
   {
@@ -12,4 +19,16 @@ export const sidebarData = [
   { id: 4, title: "Customers", url: "/Accounts", icon: Users },
   { id: 5, title: "Messages", url: "/Accounts", icon: MessageSquare },
   { id: 6, title: "Settings", url: "/Accounts", icon: Settings },
+];
+
+export const baseNav = [
+  {
+    id: 1,
+    title: "Home",
+    url: "/",
+  },
+  { id: 2, title: "Products", url: "/products" },
+  { id: 4, title: "About Us", url: "/about" },
+  { id: 5, title: "Contact Us", url: "/contact" },
+  { id: 6, title: "Blog", url: "/blog" },
 ];
