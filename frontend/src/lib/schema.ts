@@ -49,9 +49,9 @@ export const resetPasswordSchema = z.object({
     .min(6, { message: "New password must be at least 8 characters long" }),
 });
 
-const CategoryType = z.enum(["TABLE", "CHAIR", "COVER"], {
-  message: "it can only be TABLE, COVER or CHAIR",
-});
+// const CategoryType = z.enum(["TABLE", "CHAIR", "COVER"], {
+//   message: "it can only be TABLE, COVER or CHAIR",
+// });
 
 export const productSchema = z.object({
   name: z
@@ -64,19 +64,15 @@ export const productSchema = z.object({
   price: z.coerce
     .number({ required_error: "Price is required" })
     .min(1, "Enter the price for this product"),
-  category: CategoryType,
-  // tags: z.array(z.string()),
+  category: z.string().toUpperCase(),
 });
-// sellerId: z
-//   .string({ required_error: "sellerId is required" })
-//   .min(3, { message: "sellerId must be at least 3 characters long" }),
 
 export const updateProductSchema = z.object({
   name: z.string().optional(),
   description: z.string().optional(),
   imageUrl: z.string(),
   price: z.coerce.number().optional(),
-  category: CategoryType,
+  category: z.string().toUpperCase(),
   tags: z.array(z.string()).optional(),
   sellerId: z
     .string({ required_error: "sellerId is required" })
