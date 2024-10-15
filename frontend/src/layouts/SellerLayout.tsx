@@ -35,6 +35,10 @@ export function SellerLayout({
     return null;
   }
 
+  if (authState.user?.accountType === "SHOPPER") {
+    return null;
+  }
+
   return (
     <div className="">
       <section className="max-w-7x mx-auto flex">
@@ -66,7 +70,7 @@ export function SellerLayout({
         </div>
 
         <div className="w-full bg-neutral-100 min-h-full flex-grow px-4">
-          <TopBar authState={authState} isAuthenticated={isAuthenticated} />
+          <TopBar authState={authState} />
           <div className="md:px-3">
             <Outlet />
           </div>

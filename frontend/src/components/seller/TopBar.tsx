@@ -1,16 +1,10 @@
 import { AuthState } from "@/services/auth/types";
-import { Bell, MoveDown, Search } from "lucide-react";
+import { Bell, ChevronDown, Search } from "lucide-react";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Label } from "../ui/label";
 // absolute top-[50%] left-[10%] translate-x-[-50%] translate-y-[-50%] cursor-pointer
 
-export function TopBar({
-  isAuthenticated,
-  authState,
-}: {
-  isAuthenticated: boolean;
-  authState: AuthState;
-}) {
+export function TopBar({ authState }: { authState: AuthState }) {
   // console.log(authState, isAuthenticated);
 
   return (
@@ -39,13 +33,11 @@ export function TopBar({
               <AvatarFallback>CN</AvatarFallback>
             </Avatar> */}
             <aside>
-              <p className="font-semibold leading-3">
-                {authState.user?.email}
-              </p>
+              <p className="font-semibold leading-3">{authState.user?.email}</p>
               <Label className="font-light">Seller Account</Label>
             </aside>
             <div>
-              <MoveDown />
+              <ChevronDown className="cursor-pointer" />
             </div>
           </div>
         </div>

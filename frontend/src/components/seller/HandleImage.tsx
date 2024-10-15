@@ -4,12 +4,17 @@ import { AdvancedImage } from "@cloudinary/react";
 // import { Cloudinary, Transformation } from "@cloudinary/url-gen";
 // import {Transformation} from "@cloudinary/url-gen"
 
-export function HandleImage({ uploadedImage }: any) {
-  console.log(uploadedImage)
+export function HandleImage({
+  uploadedImage,
+  className,
+}: {
+  uploadedImage: string;
+  className?: string;
+}) {
   const myImage = cloudinaryConfig.image(uploadedImage);
   return (
-    <div className="border p-4 rounded-lg mt-10">
-      <AdvancedImage cldImg={myImage} />
+    <div className={`border rounded-md relative overflow-hidden ${className}`}>
+      <AdvancedImage cldImg={myImage} className="absolute object-cover" />
     </div>
-  )
+  );
 }
