@@ -18,9 +18,9 @@ export function Header() {
             to={data.url}
             key={data.id}
             className={clsx(
-              " text-white px-1",
+              " text-white px-1 hover:border-b hover:border-b-baseAccent",
               data.url !== path && "",
-              data.url === path && "border-b border-b-amber-500"
+              data.url === path && "border-b border-b-baseAccent"
             )}
           >
             <li>{data.title}</li>

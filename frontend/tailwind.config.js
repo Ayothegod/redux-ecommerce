@@ -19,6 +19,7 @@ export default {
       },
       colors: {
         main: "#3b82f6",
+        base: "#264B51",
         baseAccent: "#DA9C1D",
         primary: {
           DEFAULT: "hsl(var(--primary))",

@@ -10,6 +10,7 @@ import { AuthState } from "./services/auth/types";
 import { useAppSelector } from "./store";
 import { SellerProducts } from "./routes/seller/products";
 import { SellerCreateProduct } from "./routes/seller/CreateProduct";
+import { Products } from "./routes/products";
 
 export function App() {
   let authState: AuthState = {
@@ -45,22 +46,34 @@ export function App() {
       loader: rootLoader,
     },
     {
+      path: "/products",
+      element: <Products />,
+      errorElement: <RootError />,
+      loader: rootLoader,
+    },
+    {
       element: <AuthLayout />,
       children: [
         {
           path: "/auth/login",
-          element: <Login authState={authState} isAuthenticated={isAuthenticated} />,
+          element: (
+            <Login authState={authState} isAuthenticated={isAuthenticated} />
+          ),
           errorElement: <RootError />,
         },
         {
           path: "/auth/register",
-          element: <Register isAuthenticated={isAuthenticated} authState={authState} />,
+          element: (
+            <Register isAuthenticated={isAuthenticated} authState={authState} />
+          ),
           errorElement: <RootError />,
         },
       ],
     },
     {
-      element: <SellerLayout authState={authState} isAuthenticated={isAuthenticated} />,
+      element: (
+        <SellerLayout authState={authState} isAuthenticated={isAuthenticated} />
+      ),
       children: [
         {
           path: "/seller/dashboard",
@@ -68,7 +81,7 @@ export function App() {
         },
         {
           path: "/seller/products",
-          element: <SellerProducts  authState={authState} />,
+          element: <SellerProducts authState={authState} />,
         },
         {
           path: "/seller/products/new",

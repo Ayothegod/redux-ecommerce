@@ -52,10 +52,34 @@ export const productApi = createApi({
         ) => response.data.products,
         providesTags: ["productModel"],
       }),
+      getAllProducts: builder.query<
+        { products: productModel[]; totalCount: number },
+        { page: number; limit: number }
+      >({
+        query: ({ page, limit}) => ({
+          url: `products/all`,
+          params: { page, limit },
+        }),
+        transformResponse: (
+          response: {
+            data: { products: productModel[]; totalCount: number };
+          },
+          _meta,
+          _arg
+        ) => ({
+          products: response.data.products,
+          totalCount: response.data.totalCount,
+        }),
+        providesTags: ["productModel"],
+      }),
     };
   },
 });
 
 // Exporting the generated methods from createApi
-export const { useCreateProductMutation, useGetAllSellerProductsQuery } =
-  productApi;
+export const {
+  useCreateProductMutation,
+  useGetAllSellerProductsQuery,
+  useGetAllProductsQuery,
+  useLazyGetAllProductsQuery,
+} = productApi;

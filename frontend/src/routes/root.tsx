@@ -10,7 +10,7 @@ export function Root() {
   return (
     <div>
       {/* Hero + header */}
-      <section className="bg-[#264B51] min-h-screen">
+      <section className="bg-base min-h-screen">
         <Header />
         <Hero/>
       </section>
