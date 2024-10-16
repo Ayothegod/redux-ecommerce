@@ -10,7 +10,7 @@ export function Header() {
 
   return (
     <div className="body flex items-center justify-between h-12">
-      <Logo className="text-3xl" />
+      <Logo className="text-3xl text-white" />
 
       <ul className="flex gap-4 md:gap-8">
         {baseNav.map((data) => (

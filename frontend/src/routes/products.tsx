@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { useGetAllProductsQuery } from "@/services/products/productSlice";
-import { ShoppingBag } from "lucide-react";
+import { MoveRight, ShoppingBag } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -20,9 +20,22 @@ export function Products() {
   const [currentPage, setCurrentPage] = useState(1);
   const { data, error, isLoading } = useGetAllProductsQuery({
     page: currentPage,
-    limit: 10,
+    limit: 3,
   });
-  console.log(JSON.stringify(data, null, 2));
+  // console.log(JSON.stringify(data, null, 2));
+  const nextPage = () => {
+    if (data && data?.products.length < data?.totalCount) {
+      setCurrentPage((prev) => prev + 1);
+      return;
+    }
+  };
+  const prevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  // Disable or enable buttons based on conditions
+  const isNextDisabled = !data || currentPage * 3 >= data.totalCount;
+  const isPrevDisabled = currentPage === 1;
 
   return (
     <div className="">
@@ -98,14 +111,18 @@ export function Products() {
             </div>
           )}
 
-          <div>
-            <Button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            >
+          <div className="flex items-center gap-8 justify-end mt-8">
+            <Button onClick={prevPage} disabled={isPrevDisabled}>
               Previous
             </Button>
-            <Button onClick={() => setCurrentPage((prev) => prev + 1)}>
-              Next
+            <Button
+              variant="basePrimary"
+              className="rounded-full flex items-center gap-2 group"
+              onClick={nextPage}
+              disabled={isNextDisabled}
+            >
+              Next{" "}
+              <MoveRight className="group-hover:translate-x-1 transition-transform " />
             </Button>
           </div>
         </div>

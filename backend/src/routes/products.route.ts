@@ -20,6 +20,36 @@ const sellerProductsRoute = auth
       userDetails,
     });
   })
+  .get("/all", async (c) => {
+    try {
+      const page = c.req.query("page");
+      const limit = c.req.query("limit");
+
+      const pageNumber = page ? parseInt(page, 10) : 1;
+      const limitNumber = limit ? parseInt(limit, 10) : 10;
+      // console.log(pageNumber, limitNumber);
+
+      const [products, totalCount] = await Promise.all([
+        prisma.product.findMany({
+          skip: (pageNumber - 1) * limitNumber,
+          take: limitNumber,
+        }),
+        prisma.product.count(),
+      ]);
+      // log(products);
+
+      return c.json(
+        {
+          message: "All products returned successfully!",
+          statusCode: 200,
+          data: { products, totalCount },
+        },
+        200
+      );
+    } catch (error: any) {
+      c.json({ message: error.message, statusCode: 500, data: null }, 500);
+    }
+  })
   .get("/:sellerId/products", authMiddleware("SELLER"), async (c) => {
     try {
       const sellerId = c.req.param("sellerId");
@@ -31,15 +61,16 @@ const sellerProductsRoute = auth
       });
       // log(products);
 
-      c.status(200);
-      return c.json({
-        message: "All products returned successfully!",
-        statusCode: 200,
-        data: { products },
-      });
+      return c.json(
+        {
+          message: "All products returned successfully!",
+          statusCode: 200,
+          data: { products },
+        },
+        200
+      );
     } catch (error: any) {
-      c.status(500);
-      c.json({ message: error.message, statusCode: 500, data: null });
+      c.json({ message: error.message, statusCode: 500, data: null }, 500);
     }
   })
   .get("/products/:id", async (c) => {
