@@ -17,7 +17,7 @@ export function Products() {
   const [currentPage, setCurrentPage] = useState(1);
   const { data, error, isLoading } = useGetAllProductsQuery({
     page: currentPage,
-    limit: 3,
+    limit: 10,
   });
   // console.log(JSON.stringify(data, null, 2));
   

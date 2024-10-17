@@ -7,19 +7,16 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import { AuthState } from "@/services/auth/types";
+import { format } from "date-fns";
 import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
-import { format } from "date-fns";
 
-export function CompleteOrder({ authState }: { authState: AuthState }) {
+export function CompleteOrder() {
   const savedOrder: any = localStorage.getItem("order");
   const orderObject = JSON.parse(savedOrder);
-  console.log(orderObject);
 
   const date = new Date(orderObject.date);
   const formattedDate = format(date, "yyyy-MM-dd");
-  // console.log(formattedDate);
 
   return (
     <div>

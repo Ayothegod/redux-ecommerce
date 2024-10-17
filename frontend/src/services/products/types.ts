@@ -36,22 +36,6 @@ export interface cartModel {
   cart: cartItem;
 }
 
-// export interface ProductTableModel {
-//   id: string;
-//   name: string;
-//   imageUrl: string;
-//   // stock: number;
-//   price: number;
-//   createdAt: Date;
-//   updatedAt: Date;
-//   category: string;
-// }
-
-// filters (category, date)
-
-// Table for products additions(stock left (original - orderItems sold))
-// Table for products sold and the amount being sold - from orderItems (amount sold, revenue from amount (amount sold * price))
-
 export interface GetProductsResponse {
   products: productModel[];
 }
@@ -105,7 +89,3 @@ export interface CreateOrderResponse {
     amount: number;
   };
 }
-
-// export interface CreateOrderDataResponse {
-
-// }
