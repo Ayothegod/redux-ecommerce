@@ -11,6 +11,7 @@ import { useAppSelector } from "./store";
 import { SellerProducts } from "./routes/seller/products";
 import { SellerCreateProduct } from "./routes/seller/CreateProduct";
 import { Products } from "./routes/products";
+import { SingleProduct } from "./routes/shopper/SingleProduct";
 
 export function App() {
   let authState: AuthState = {
@@ -50,6 +51,14 @@ export function App() {
       element: <Products />,
       errorElement: <RootError />,
       loader: rootLoader,
+    },
+    {
+      path: "/products/:id",
+      element: <SingleProduct />,
+      errorElement: <RootError />,
+      loader: async ({ params }) => {
+        return params.id;
+      },
     },
     {
       element: <AuthLayout />,

@@ -31,6 +31,10 @@ export interface GetProductsResponse {
   products: productModel[];
 }
 
+export interface GetSingleProductResponse {
+  product: productModel;
+}
+
 export interface CreateProductRequest {
   name: string;
   description: string;

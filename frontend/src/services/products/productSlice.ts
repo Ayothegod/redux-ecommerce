@@ -5,6 +5,7 @@ import type {
   CreateProductRequest,
   CreateProductResponse,
   GetProductsResponse,
+  GetSingleProductResponse,
   productModel,
 } from "./types";
 
@@ -56,7 +57,7 @@ export const productApi = createApi({
         { products: productModel[]; totalCount: number },
         { page: number; limit: number }
       >({
-        query: ({ page, limit}) => ({
+        query: ({ page, limit }) => ({
           url: `products/all`,
           params: { page, limit },
         }),
@@ -72,6 +73,12 @@ export const productApi = createApi({
         }),
         providesTags: ["productModel"],
       }),
+      getProductById: builder.query<productModel, string>({
+        query: (id) => `products/${id}`,
+        transformResponse: (response: { data: GetSingleProductResponse }, _meta, _arg) =>
+          response.data.product,
+        providesTags: ["productModel"],
+      }),
     };
   },
 });
@@ -82,4 +89,6 @@ export const {
   useGetAllSellerProductsQuery,
   useGetAllProductsQuery,
   useLazyGetAllProductsQuery,
+  useGetProductByIdQuery,
+  useLazyGetProductByIdQuery,
 } = productApi;

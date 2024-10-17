@@ -73,7 +73,7 @@ const sellerProductsRoute = auth
       c.json({ message: error.message, statusCode: 500, data: null }, 500);
     }
   })
-  .get("/products/:id", async (c) => {
+  .get("/:id", async (c) => {
     try {
       const id = c.req.param("id");
 
@@ -82,17 +82,18 @@ const sellerProductsRoute = auth
           id: id,
         },
       });
-      log(product);
+      // log(product);
 
-      c.status(200);
-      return c.json({
-        message: "Product returned successfully!",
-        statusCode: 201,
-        data: { product },
-      });
+      return c.json(
+        {
+          message: "Product returned successfully!",
+          statusCode: 200,
+          data: { product },
+        },
+        200
+      );
     } catch (error: any) {
-      c.status(400);
-      c.json({ message: error.message, statusCode: 500, data: null });
+      c.json({ message: error.message, statusCode: 500, data: null }, 500);
     }
   })
   .post("/product", authMiddleware("SELLER"), async (c) => {
