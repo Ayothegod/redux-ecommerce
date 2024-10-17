@@ -37,32 +37,32 @@ const productsOrders = auth
         );
       }
 
-      // Extract product IDs from the order items
-      const productIds = orderItems.map((item: OrderItem) => item.productId);
+      // // Extract product IDs from the order items
+      // const productIds = orderItems.map((item: OrderItem) => item.productId);
 
-      // Check for existing pending orders with the same products and shopper
-      const existingOrder = await prisma.order.findFirst({
-        where: {
-          shopperId: user.id,
-          status: "PENDING",
-          orderItems: {
-            some: {
-              productId: { in: productIds },
-            },
-          },
-        },
-        include: { orderItems: true },
-      });
+      // // Check for existing pending orders with the same products and shopper
+      // const existingOrder = await prisma.order.findFirst({
+      //   where: {
+      //     shopperId: user.id,
+      //     status: "PENDING",
+      //     orderItems: {
+      //       some: {
+      //         productId: { in: productIds },
+      //       },
+      //     },
+      //   },
+      //   include: { orderItems: true },
+      // });
 
-      if (existingOrder) {
-        return c.json(
-          {
-            message: "You already have a pending order with the same items.",
-            data: null,
-          },
-          403
-        );
-      }
+      // if (existingOrder) {
+      //   return c.json(
+      //     {
+      //       message: "You already have a pending order with the same items.",
+      //       data: null,
+      //     },
+      //     403
+      //   );
+      // }
 
       const newOrder = await prisma.order.create({
         data: {
@@ -83,10 +83,17 @@ const productsOrders = auth
       });
       log(newOrder);
 
+      // delete all cartItems
+
       return c.json(
         {
           message: "Order created successfully!",
-          data: null,
+          data: {
+            orderId: newOrder.id,
+            date: newOrder.createdAt,
+            items: newOrder.orderItems.length,
+            amount: newOrder.totalAmount
+          },
         },
         201
       );

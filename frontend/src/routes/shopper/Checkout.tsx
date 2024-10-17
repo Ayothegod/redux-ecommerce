@@ -45,7 +45,8 @@ export function Checkout({ authState }: { authState: AuthState }) {
     const body = { orderItems: items, totalAmount: totalPrice };
     try {
       const response = await newOrder(body).unwrap();
-      console.log(response);
+      // console.log(response);
+      localStorage.setItem("order", JSON.stringify(response.data));
 
       toast({
         description: `${response.message}`,

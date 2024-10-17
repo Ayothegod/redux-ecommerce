@@ -21,7 +21,7 @@ export interface itemProduct {
   productPrice: number;
   cartId: string;
   productId: string;
-  sellerId: string
+  sellerId: string;
 }
 
 export interface cartItem {
@@ -98,7 +98,12 @@ export interface CreateOrderRequest {
 
 export interface CreateOrderResponse {
   message: string;
-  data: null;
+  data: {
+    orderId: string;
+    date: Date;
+    items: number;
+    amount: number;
+  };
 }
 
 // export interface CreateOrderDataResponse {
