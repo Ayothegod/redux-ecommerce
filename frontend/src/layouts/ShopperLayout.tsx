@@ -13,7 +13,7 @@ export function ShopperLayout({
   isAuthenticated: boolean;
   authState: AuthState;
 }) {
-  const { id }: any = authState.user;
+  const id =  authState.user?.id
   const { data } = useGetCartQuery(id as string);
   // console.log(data);
 

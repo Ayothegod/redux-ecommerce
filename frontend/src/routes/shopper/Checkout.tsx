@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CartTable } from "@/components/base/CartTable";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,7 +11,7 @@ import { AuthState } from "@/services/auth/types";
 import { useGetCartQuery } from "@/services/products/productSlice";
 import { Link } from "react-router-dom";
 
-export function Cart({ authState }: { authState: AuthState }) {
+export function Checkout({ authState }: { authState: AuthState }) {
   const { id }: any = authState.user;
   const { data } = useGetCartQuery(id as string);
   const items = data?.items;
@@ -25,7 +24,7 @@ export function Cart({ authState }: { authState: AuthState }) {
     }, 0);
 
   return (
-    <div className="">
+    <div>
       <section className="bg-base">
         <div className="py-10 md:py-20 text-white flex items-center justify-center">
           <Breadcrumb>
@@ -39,7 +38,7 @@ export function Cart({ authState }: { authState: AuthState }) {
 
               <BreadcrumbItem>
                 <Link
-                  to="/products"
+                  to="/products "
                   className="text-lg text-white/70 hover:text-white"
                 >
                   Products
@@ -48,7 +47,7 @@ export function Cart({ authState }: { authState: AuthState }) {
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbPage className="text-lg text-white/50">
-                  Cart
+                  Checkout
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
@@ -56,13 +55,8 @@ export function Cart({ authState }: { authState: AuthState }) {
         </div>
       </section>
 
-      <div className="py-10 body flex flex-col md:flex-row gap-4 items-start">
-        <div className="w-full shadow">
-          <div></div>
-          {items && <CartTable items={items} />}
-        </div>
-
-        <aside className="md:max-w-[35%] w-full rounded-md shadow overflow-hidden">
+      <div className="my-20 px-4 md:px-10 flex items-center justify-center">
+        <aside className=" w-full sm:w-1/2 rounded-md shadow overflow-hidden border">
           <div className="w-full bg-base font-semibold text-white p-3">
             Order Summary
           </div>
@@ -94,10 +88,14 @@ export function Cart({ authState }: { authState: AuthState }) {
             <span>${totalPrice && totalPrice + shipping}</span>
           </div>
 
-          <div className="w-full bg-neutral-100 p-3">
-            <Link to="/products/checkout">
-              <Button className="w-full rounded-full" variant="basePrimary">
-                Proceed To Checkout
+          <div className="w-full bg-neutral-100 p-3 flex flex-col gap-4 md:flex-row-reverse">
+            <Button className="w-full rounded-full" variant="basePrimary">
+              Confirm Order
+            </Button>
+
+            <Link to="/products/cart" className="w-full">
+              <Button className="w-full rounded-full" variant="base">
+                Cancel
               </Button>
             </Link>
           </div>

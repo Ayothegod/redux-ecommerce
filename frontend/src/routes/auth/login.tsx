@@ -35,7 +35,7 @@ export function Login({
   const onSubmit = async (data: LoginSchemaType) => {
     try {
       const response = await login(data).unwrap();
-      console.log(response);
+      // console.log(response);
 
       toast({
         title: `Welcome back, ${response.data.userRes.accountType}`,
@@ -47,7 +47,7 @@ export function Login({
       }
       return navigate("/");
     } catch (error: any) {
-      console.log({ error });
+      // console.log({ error });
 
       if (error.data) {
         toast({

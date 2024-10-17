@@ -26,7 +26,7 @@ export function Footer() {
       <div className="border-y flex items-center justify-center py-4">
         <Logo className="text-4xl text-black" />
       </div>
-      <div className="body grid grid-cols-1 md:grid-cols-3 py-8">
+      <div className="body grid grid-cols-1 md:grid-cols-3 py-8 gap-8">
         <div>
           <h3 className="font-semibold text-lg mb-4">About</h3>
           <ul className="flex flex-col gap-2">

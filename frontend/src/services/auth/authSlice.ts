@@ -64,7 +64,7 @@ const authSlice = createSlice({
     builder.addMatcher(
       authApi.endpoints.login.matchFulfilled,
       (state, { payload }) => {
-        console.log("Login done");
+        // console.log("Login done");
         
         state.token = payload.data?.accessToken;
         state.user = {
@@ -80,7 +80,7 @@ const authSlice = createSlice({
           "token",
           `${JSON.stringify(payload.data?.accessToken)}`
         );
-        console.log("Login done");
+        // console.log("Login done");
         return state;
       }
     );
@@ -102,7 +102,7 @@ const authSlice = createSlice({
           "token",
           `${JSON.stringify(payload.data?.accessToken)}`
         );
-        console.log("Register done");
+        // console.log("Register done");
         return state;
       }
     );

@@ -1,8 +1,5 @@
 import { FeaturedCategory } from "@/components/base/FeaturedCategory";
-import { Footer } from "@/components/base/Footer";
-import { Header } from "@/components/base/Header";
 import { Hero } from "@/components/base/Hero";
-import { Info } from "@/components/base/Info";
 import { Button } from "@/components/ui/button";
 import { Link, useRouteError } from "react-router-dom";
 
@@ -11,13 +8,11 @@ export function Root() {
     <div>
       {/* Hero + header */}
       <section className="bg-base min-h-screen">
-        <Header />
-        <Hero/>
+        <Hero />
       </section>
 
-      <Info />
-      <FeaturedCategory/>
-      <Footer/>
+      {/* <Info /> */}
+      <FeaturedCategory />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Logo } from "./Logo";
 import { baseNav } from "@/lib/data";
 import clsx from "clsx";
+import { Button } from "../ui/button";
 
 export function Header({
   isAuthenticated,
@@ -41,7 +42,7 @@ export function Header({
               <Heart className="hover:text-white" />
             </div>
           </Link>{" "}
-          <Link to="/cart" className="relative">
+          <Link to="/products/cart" className="relative">
             <div className="absolute -top-1 -right-1 bg-white w-5 h-5 flex items-center justify-center rounded-full text-base text-sm">
               {items?.items.length}
             </div>
@@ -56,7 +57,11 @@ export function Header({
           </Link>
         </div>
       ) : (
-        "Login"
+        <Link to="/auth/login">
+          <Button variant="basePrimary" className="rounded-full">
+            Login
+          </Button>
+        </Link>
       )}
     </div>
   );

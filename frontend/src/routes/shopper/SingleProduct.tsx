@@ -18,7 +18,11 @@ import { Heart, Minus, MoveLeft, Pin, Plus } from "lucide-react";
 import { useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
 
-export function SingleProduct() {
+export function SingleProduct({
+  isAuthenticated,
+}: {
+  isAuthenticated: boolean;
+}) {
   const { toast } = useToast();
   const navigate = useNavigate();
   const id: string | undefined = useLoaderData() as string | undefined;
@@ -29,6 +33,15 @@ export function SingleProduct() {
 
   const [amount, setAmount] = useState(1);
   const addCart = async () => {
+    if (!isAuthenticated) {
+      toast({
+        variant: "destructive",
+        description: "You need to login to perform this action.",
+      });
+      navigate("/auth/login");
+      return;
+    }
+
     const body = { productId: product?.id, quantity: amount };
     try {
       const response = await addItemToCart(body).unwrap();
@@ -59,6 +72,14 @@ export function SingleProduct() {
   };
 
   const buyNow = () => {
+    if (!isAuthenticated) {
+      toast({
+        variant: "destructive",
+        description: "You need to login to perform this action.",
+      });
+      navigate("/auth/login");
+      return;
+    }
     navigate("/products/cart");
   };
 

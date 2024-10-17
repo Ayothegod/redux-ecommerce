@@ -14,6 +14,7 @@ import { AuthState } from "./services/auth/types";
 import { useAppSelector } from "./store";
 import { Cart } from "./routes/shopper/Cart";
 import { ShopperLayout } from "./layouts/ShopperLayout";
+import { Checkout } from "./routes/shopper/Checkout";
 
 export function App() {
   let authState: AuthState = {
@@ -43,12 +44,6 @@ export function App() {
 
   const router = createBrowserRouter([
     {
-      path: "/",
-      element: <Root />,
-      errorElement: <RootError />,
-      loader: rootLoader,
-    },
-    {
       element: (
         <ShopperLayout
           authState={authState}
@@ -57,6 +52,12 @@ export function App() {
       ),
       children: [
         {
+          path: "/",
+          element: <Root />,
+          errorElement: <RootError />,
+          loader: rootLoader,
+        },
+        {
           path: "/products",
           element: <Products />,
           errorElement: <RootError />,
@@ -64,7 +65,7 @@ export function App() {
         },
         {
           path: "/products/:id",
-          element: <SingleProduct />,
+          element: <SingleProduct isAuthenticated={isAuthenticated} />,
           errorElement: <RootError />,
           loader: async ({ params }) => {
             return params.id;
@@ -73,6 +74,11 @@ export function App() {
         {
           path: "/products/cart",
           element: <Cart authState={authState} />,
+          errorElement: <RootError />,
+        },
+        {
+          path: "/products/checkout",
+          element: <Checkout authState={authState} />,
           errorElement: <RootError />,
         },
       ],
