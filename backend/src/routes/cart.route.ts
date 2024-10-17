@@ -60,7 +60,7 @@ const cartRoute = auth
         return c.json({ message: errorMessages.join(", ") });
       }
 
-      const { productId, quantity } = result.data;
+      const { productId, quantity, sellerId } = result.data;
 
       const product = await prisma.product.findUnique({
         where: {
@@ -92,6 +92,7 @@ const cartRoute = auth
                 productName: product.name,
                 productPrice: product.price,
                 productUrl: product.imageUrl,
+                sellerId,
               },
             },
           },
@@ -123,6 +124,7 @@ const cartRoute = auth
               productName: product.name,
               productPrice: product.price,
               productUrl: product.imageUrl,
+              sellerId,
             },
           });
         }

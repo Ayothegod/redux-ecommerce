@@ -7,21 +7,81 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { AuthState } from "@/services/auth/types";
-import { useGetCartQuery } from "@/services/products/productSlice";
-import { Link } from "react-router-dom";
+import {
+  useCreateOrderMutation,
+  useGetCartQuery,
+} from "@/services/products/productSlice";
+import { Link, useNavigate } from "react-router-dom";
 
 export function Checkout({ authState }: { authState: AuthState }) {
+  const [newOrder] = useCreateOrderMutation();
   const { id }: any = authState.user;
+  const { toast } = useToast();
+  const navigate = useNavigate();
   const { data } = useGetCartQuery(id as string);
   const items = data?.items;
   const shipping = 0;
+
+  // console.log(JSON.stringify(items, null, 2));
 
   const totalPrice =
     items &&
     items.reduce((total, item) => {
       return total + item.productPrice * item.quantity;
     }, 0);
+
+  const createOrder = async () => {
+    if (!authState) {
+      toast({
+        variant: "destructive",
+        description: "You need to login to perform this action.",
+      });
+      navigate("/auth/login");
+      return;
+    }
+
+    const body = { orderItems: items, totalAmount: totalPrice };
+    try {
+      const response = await newOrder(body).unwrap();
+      console.log(response);
+
+      toast({
+        description: `${response.message}`,
+      });
+
+      navigate("/products/order/confirmation");
+      return;
+    } catch (error: any) {
+      console.log({ error });
+
+      if (error.status === 403) {
+        toast({
+          variant: "destructive",
+          description: `${error.data.message}`,
+        });
+        navigate("/products/order/confirmation");
+        return;
+      }
+
+      if (error.data) {
+        return toast({
+          variant: "destructive",
+          description: `${error.data.message}`,
+        });
+      }
+
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        });
+        return null;
+      }
+    }
+  };
 
   return (
     <div>
@@ -38,7 +98,7 @@ export function Checkout({ authState }: { authState: AuthState }) {
 
               <BreadcrumbItem>
                 <Link
-                  to="/products "
+                  to="/products"
                   className="text-lg text-white/70 hover:text-white"
                 >
                   Products
@@ -89,7 +149,11 @@ export function Checkout({ authState }: { authState: AuthState }) {
           </div>
 
           <div className="w-full bg-neutral-100 p-3 flex flex-col gap-4 md:flex-row-reverse">
-            <Button className="w-full rounded-full" variant="basePrimary">
+            <Button
+              className="w-full rounded-full"
+              variant="basePrimary"
+              onClick={createOrder}
+            >
               Confirm Order
             </Button>
 

@@ -91,15 +91,22 @@ export const orderItem = z.object({
   productId: z.string(),
   sellerId: z.string(),
   quantity: z.string(),
-  price: z.string(),
+  productPrice: z.string(),
   status: OrderItemStatus,
+  id: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  productUrl: z.string(),
+  productName: z.string(),
+  cartId: z.string(),
 });
 
 export type OrderItem = z.infer<typeof orderItem>;
 
 export const cartItemSchema = z.object({
   quantity: z.coerce.number().min(1, "Quantity must be at least 1"),
-  productId: z.string(),
+  productId: z.string({ required_error: "productId is required" }),
+  sellerId: z.string({ required_error: "sellerId is required" }),
 });
 
 const cartSchema = z.object({

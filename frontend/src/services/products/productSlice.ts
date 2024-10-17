@@ -4,6 +4,8 @@ import type { RootState } from "../../store";
 import type {
   cartItem,
   cartModel,
+  CreateOrderRequest,
+  CreateOrderResponse,
   CreateProductRequest,
   CreateProductResponse,
   GetProductsResponse,
@@ -29,7 +31,7 @@ export const productApi = createApi({
   }),
   refetchOnFocus: true,
   refetchOnReconnect: true,
-  tagTypes: ["Product", "Cart", "userCart"],
+  tagTypes: ["Product", "Cart", "Order"],
   endpoints: (builder) => {
     return {
       createProduct: builder.mutation<
@@ -92,7 +94,11 @@ export const productApi = createApi({
       }),
       addToCart: builder.mutation<
         string,
-        { productId: string | undefined; quantity: number }
+        {
+          productId: string | undefined;
+          quantity: number;
+          sellerId: string | undefined;
+        }
       >({
         query: (body) => ({
           url: "cart/add",
@@ -115,6 +121,15 @@ export const productApi = createApi({
           response.message,
         invalidatesTags: ["Cart"],
       }),
+      createOrder: builder.mutation<CreateOrderResponse, CreateOrderRequest>({
+        query: (body) => ({
+          url: "orders/create",
+          method: "POST",
+          credentials: "include",
+          body: body,
+        }),
+        invalidatesTags: ["Order"],
+      }),
     };
   },
 });
@@ -131,4 +146,5 @@ export const {
   useLazyGetCartQuery,
   useAddToCartMutation,
   useRemoveFromCartMutation,
+  useCreateOrderMutation,
 } = productApi;

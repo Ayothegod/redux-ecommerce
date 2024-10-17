@@ -2,12 +2,7 @@ import { log } from "console";
 import { Hono } from "hono";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { prisma } from "../utils/db.js";
-import {
-  orderItem,
-  productSchema,
-  updateProductSchema,
-  OrderItem,
-} from "../utils/schema.js";
+import { OrderItem } from "../utils/schema.js";
 
 type Variables = {
   user: string;
@@ -26,18 +21,47 @@ const productsOrders = auth
       userDetails,
     });
   })
-  .post("/orders", async (c) => {
+  .post("/create", authMiddleware("SHOPPER"), async (c) => {
     try {
       const { orderItems, totalAmount } = await c.req.json();
       const user: any = c.get("user");
+      console.log(orderItems, totalAmount);
 
       if (user.role === "SELLER") {
-        c.status(404);
-        return c.json({
-          message: "A seller cannot shop for products right now!",
-          statusCode: 404,
-          data: null,
-        });
+        return c.json(
+          {
+            message: "A seller cannot shop for products right now!",
+            data: null,
+          },
+          400
+        );
+      }
+
+      // Extract product IDs from the order items
+      const productIds = orderItems.map((item: OrderItem) => item.productId);
+
+      // Check for existing pending orders with the same products and shopper
+      const existingOrder = await prisma.order.findFirst({
+        where: {
+          shopperId: user.id,
+          status: "PENDING",
+          orderItems: {
+            some: {
+              productId: { in: productIds },
+            },
+          },
+        },
+        include: { orderItems: true },
+      });
+
+      if (existingOrder) {
+        return c.json(
+          {
+            message: "You already have a pending order with the same items.",
+            data: null,
+          },
+          403
+        );
       }
 
       const newOrder = await prisma.order.create({
@@ -50,7 +74,7 @@ const productsOrders = auth
               productId: item.productId,
               sellerId: item.sellerId,
               quantity: item.quantity,
-              price: item.price,
+              price: item.productPrice,
               status: "PENDING",
             })),
           },
@@ -59,19 +83,23 @@ const productsOrders = auth
       });
       log(newOrder);
 
-      c.status(201);
-      return c.json({
-        message: "Order created successfully!",
-        statusCode: 201,
-        data: { newOrder },
-      });
+      return c.json(
+        {
+          message: "Order created successfully!",
+          data: null,
+        },
+        201
+      );
     } catch (error: any) {
-      c.status(500);
-      return c.json({
-        message: "Error creating order",
-        statusCode: 500,
-        data: null,
-      });
+      console.log("Error", error);
+
+      return c.json(
+        {
+          message: "Error creating order",
+          data: null,
+        },
+        500
+      );
     }
   })
   // ADMIN

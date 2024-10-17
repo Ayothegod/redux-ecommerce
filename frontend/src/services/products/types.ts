@@ -21,6 +21,7 @@ export interface itemProduct {
   productPrice: number;
   cartId: string;
   productId: string;
+  sellerId: string
 }
 
 export interface cartItem {
@@ -77,11 +78,29 @@ export interface CreateProductResponse {
   };
 }
 
-export interface CreateProductResponse {
-  message: string;
-  statusCode: number;
-  data: {
-    imagePublicId: string;
-    name: string;
-  };
+export interface OrderItem {
+  productId: string;
+  sellerId: string;
+  quantity: number;
+  productPrice: number;
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  productUrl: string;
+  productName: string;
+  cartId: string;
 }
+
+export interface CreateOrderRequest {
+  totalAmount: number | undefined;
+  orderItems: OrderItem[] | undefined;
+}
+
+export interface CreateOrderResponse {
+  message: string;
+  data: null;
+}
+
+// export interface CreateOrderDataResponse {
+
+// }

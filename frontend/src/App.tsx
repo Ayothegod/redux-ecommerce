@@ -15,6 +15,7 @@ import { useAppSelector } from "./store";
 import { Cart } from "./routes/shopper/Cart";
 import { ShopperLayout } from "./layouts/ShopperLayout";
 import { Checkout } from "./routes/shopper/Checkout";
+import { CompleteOrder } from "./routes/shopper/CompleteOrder";
 
 export function App() {
   let authState: AuthState = {
@@ -79,6 +80,11 @@ export function App() {
         {
           path: "/products/checkout",
           element: <Checkout authState={authState} />,
+          errorElement: <RootError />,
+        },
+        {
+          path: "/products/order/confirmation",
+          element: <CompleteOrder authState={authState} />,
           errorElement: <RootError />,
         },
       ],

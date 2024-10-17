@@ -18,6 +18,8 @@ export function Cart({ authState }: { authState: AuthState }) {
   const items = data?.items;
   const shipping = 0;
 
+  console.log(JSON.stringify(items, null, 2));
+
   const totalPrice =
     items &&
     items.reduce((total, item) => {

@@ -29,7 +29,7 @@ export function SingleProduct({
 
   const { data: product } = useGetProductByIdQuery(id as string);
   const [addItemToCart] = useAddToCartMutation();
-  // console.log(JSON.stringify(product, null, 2));
+  console.log(JSON.stringify(product, null, 2));
 
   const [amount, setAmount] = useState(1);
   const addCart = async () => {
@@ -42,7 +42,11 @@ export function SingleProduct({
       return;
     }
 
-    const body = { productId: product?.id, quantity: amount };
+    const body = {
+      productId: product?.id,
+      quantity: amount,
+      sellerId: product?.sellerId,
+    };
     try {
       const response = await addItemToCart(body).unwrap();
       console.log(response);
