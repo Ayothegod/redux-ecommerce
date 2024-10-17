@@ -1,4 +1,6 @@
+import { Footer } from "@/components/base/Footer";
 import { Header } from "@/components/base/Header";
+import { Info } from "@/components/base/Info";
 import { HandleImage } from "@/components/seller/HandleImage";
 import {
   Breadcrumb,
@@ -85,19 +87,19 @@ export function SingleProduct() {
               </div>
             </aside>
 
-            <div>
+            <div className="mt-4">
               <h2 className="font-semibold text-xl">{product?.name}</h2>
               <p>{product?.description}</p>
             </div>
 
-            <div>
+            <div className="my-4">
               <p className="font-bold">${product?.price}.00</p>
               <div>
                 <div></div>
               </div>
             </div>
 
-            <div className="p-1 rounded-full bg-neutral-100 flex items-center">
+            <div className="p-1 rounded-full bg-neutral-100 flex items-center mt-auto">
               <button
                 className="h-10 w-10 rounded-full bg-white flex items-center justify-center"
                 onClick={() => (amount === 1 ? null : setAmount(amount - 1))}
@@ -117,12 +119,14 @@ export function SingleProduct() {
 
             <div className="w-full flex gap-4 flex-col items-center sm:flex-row">
               <Button
+                size="lg"
                 variant="basePrimary"
                 className="rounded-full flex items-center gap-2 px-8 w-full"
               >
                 Buy Now
               </Button>
               <Button
+                size="lg"
                 variant="base"
                 className="rounded-full flex items-center gap-2 px-8 w-full"
               >
@@ -135,6 +139,9 @@ export function SingleProduct() {
           </div>
         </div>
       </div>
+
+      <Info />
+      <Footer />
     </div>
   );
 }

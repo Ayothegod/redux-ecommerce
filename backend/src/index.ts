@@ -2,6 +2,7 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import authRoute from "./routes/auth.route.js";
 import sellerProductsRoute from "./routes/products.route.js";
+import cartRoute from "./routes/cart.route.js";
 import productsOrders from "./routes/orders.route.js";
 import { cors } from "hono/cors";
 
@@ -39,6 +40,7 @@ app.get("/api/v1/seller", (c) => {
 app.route("/api/v1/auth", authRoute);
 app.route("/api/v1/products", sellerProductsRoute);
 app.route("/api/v1/orders", productsOrders);
+app.route("/api/v1/cart", cartRoute);
 
 const port = 3000;
 console.log(`Server is running on port ${port}`);
