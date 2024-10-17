@@ -29,7 +29,7 @@ export const productApi = createApi({
   }),
   refetchOnFocus: true,
   refetchOnReconnect: true,
-  tagTypes: ["productModel", "cartModel", "userCart"],
+  tagTypes: ["Product", "Cart", "userCart"],
   endpoints: (builder) => {
     return {
       createProduct: builder.mutation<
@@ -42,7 +42,7 @@ export const productApi = createApi({
           credentials: "include",
           body: body,
         }),
-        invalidatesTags: ["productModel"],
+        invalidatesTags: ["Product"],
       }),
       getAllSellerProducts: builder.query<productModel[], void>({
         query: (sellerId) => ({
@@ -53,7 +53,7 @@ export const productApi = createApi({
           _meta,
           _arg
         ) => response.data.products,
-        providesTags: ["productModel"],
+        providesTags: ["Product"],
       }),
       getAllProducts: builder.query<
         { products: productModel[]; totalCount: number },
@@ -73,7 +73,7 @@ export const productApi = createApi({
           products: response.data.products,
           totalCount: response.data.totalCount,
         }),
-        providesTags: ["productModel"],
+        providesTags: ["Product"],
       }),
       getProductById: builder.query<productModel, string>({
         query: (id) => `products/${id}`,
@@ -82,13 +82,13 @@ export const productApi = createApi({
           _meta,
           _arg
         ) => response.data.product,
-        providesTags: ["productModel"],
+        providesTags: ["Product"],
       }),
       getCart: builder.query<cartItem, string>({
         query: (id) => `cart/${id}`,
         transformResponse: (response: { data: cartModel }, _meta, _arg) =>
           response.data.cart,
-        providesTags: ["userCart"],
+        providesTags: ["Cart"],
       }),
       addToCart: builder.mutation<
         string,
@@ -102,7 +102,18 @@ export const productApi = createApi({
         }),
         transformResponse: (response: { message: string }, _meta, _arg) =>
           response.message,
-        invalidatesTags: ["userCart"],
+        invalidatesTags: ["Cart"],
+      }),
+      removeFromCart: builder.mutation<string, { productId: string }>({
+        query: (body) => ({
+          url: "cart/remove",
+          method: "POST",
+          credentials: "include",
+          body: body,
+        }),
+        transformResponse: (response: { message: string }, _meta, _arg) =>
+          response.message,
+        invalidatesTags: ["Cart"],
       }),
     };
   },
@@ -119,4 +130,5 @@ export const {
   useGetCartQuery,
   useLazyGetCartQuery,
   useAddToCartMutation,
+  useRemoveFromCartMutation,
 } = productApi;

@@ -157,6 +157,7 @@ const cartRoute = auth
       const user: any = c.get("user");
       const { id } = user;
       const { productId } = body;
+      log(productId);
 
       const cart = await prisma.cart.findUnique({
         where: { userId: id },

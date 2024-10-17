@@ -3,14 +3,14 @@ import { CartTable } from "@/components/base/CartTable";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator,
+  BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { AuthState } from "@/services/auth/types";
 import { useGetCartQuery } from "@/services/products/productSlice";
+import { Link } from "react-router-dom";
 
 export function Cart({ authState }: { authState: AuthState }) {
   const { id }: any = authState.user;
@@ -23,7 +23,6 @@ export function Cart({ authState }: { authState: AuthState }) {
     items.reduce((total, item) => {
       return total + item.productPrice * item.quantity;
     }, 0);
-  console.log("Total Price:", totalPrice);
 
   return (
     <div className="">
@@ -32,22 +31,16 @@ export function Cart({ authState }: { authState: AuthState }) {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink
-                  href="/"
-                  className="text-lg text-white/70 hover:text-white"
-                >
+                <Link to="/" className="text-lg text-white/70 hover:text-white">
                   Home
-                </BreadcrumbLink>
+                </Link>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
 
               <BreadcrumbItem>
-                <BreadcrumbLink
-                  href="/products"
-                  className="text-lg text-white/70 hover:text-white"
-                >
+                <Link to="/products " className="text-lg text-white/70 hover:text-white">
                   Products
-                </BreadcrumbLink>
+                </Link>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>

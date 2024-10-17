@@ -1,7 +1,9 @@
 import { cartItem } from "@/services/products/types";
 import { Heart, ShoppingBag, User } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Logo } from "./Logo";
+import { baseNav } from "@/lib/data";
+import clsx from "clsx";
 
 export function Header({
   isAuthenticated,
@@ -10,14 +12,14 @@ export function Header({
   isAuthenticated: boolean;
   items: cartItem | undefined;
 }) {
-  // const location = useLocation();
-  // const path = location.pathname;
+  const location = useLocation();
+  const path = location.pathname;
 
   return (
     <div className="body flex items-center justify-between h-12">
       <Logo className="text-3xl text-white" />
 
-      {/* <ul className="flex gap-4 md:gap-8">
+      <ul className="hidden md:flex gap-4 md:gap-8">
         {baseNav.map((data) => (
           <Link
             to={data.url}
@@ -31,7 +33,7 @@ export function Header({
             <li>{data.title}</li>
           </Link>
         ))}
-      </ul> */}
+      </ul>
       {isAuthenticated ? (
         <div className="text-white/70 flex">
           <Link to="/account" className="hidden">
