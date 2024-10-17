@@ -4,14 +4,15 @@ import { RootLayout } from "./layouts/RootLayout";
 import { SellerLayout } from "./layouts/SellerLayout";
 import { Login } from "./routes/auth/login";
 import { Register } from "./routes/auth/register";
+import { Products } from "./routes/products";
 import { Root, RootError, Loader as rootLoader } from "./routes/root";
+import { SellerCreateProduct } from "./routes/seller/CreateProduct";
 import { Dashboard as SellerDashboard } from "./routes/seller/dashboard";
+import { SellerProducts } from "./routes/seller/products";
+import { SingleProduct } from "./routes/shopper/SingleProduct";
 import { AuthState } from "./services/auth/types";
 import { useAppSelector } from "./store";
-import { SellerProducts } from "./routes/seller/products";
-import { SellerCreateProduct } from "./routes/seller/CreateProduct";
-import { Products } from "./routes/products";
-import { SingleProduct } from "./routes/shopper/SingleProduct";
+import { Cart } from "./routes/shopper/Cart";
 
 export function App() {
   let authState: AuthState = {
@@ -60,6 +61,17 @@ export function App() {
         return params.id;
       },
     },
+    {
+      path: "/products/cart",
+      element: <Cart  authState={authState} />,
+      errorElement: <RootError />,
+    },
+    // {
+    //   element: <ShopperLayout/>,
+    //   children: [
+
+    //   ]
+    // },
     {
       element: <AuthLayout />,
       children: [

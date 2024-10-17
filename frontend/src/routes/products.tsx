@@ -22,7 +22,7 @@ export function Products() {
     page: currentPage,
     limit: 3,
   });
-  console.log(JSON.stringify(data, null, 2));
+  // console.log(JSON.stringify(data, null, 2));
   
   const nextPage = () => {
     if (data && data?.products.length < data?.totalCount) {

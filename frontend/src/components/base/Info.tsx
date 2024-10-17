@@ -3,8 +3,8 @@ import { BadgeHelp, CarFront, Repeat, ShoppingBag } from "lucide-react";
 const infoData = [
   { id: 1, title: "Fast & Free Shipping", icon: CarFront },
   { id: 2, title: "Easy to Shop", icon: ShoppingBag },
-  { id: 1, title: "24/7 Support", icon: BadgeHelp },
-  { id: 1, title: "Hassle Free Returns", icon: Repeat },
+  { id: 3, title: "24/7 Support", icon: BadgeHelp },
+  { id: 4, title: "Hassle Free Returns", icon: Repeat },
 ];
 
 export function Info() {

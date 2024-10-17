@@ -11,22 +11,27 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { useGetProductByIdQuery } from "@/services/products/productSlice";
 import { Heart, Minus, MoveLeft, Pin, Plus } from "lucide-react";
 import { useState } from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 
 export function SingleProduct() {
+  const { toast } = useToast();
+  const navigate = useNavigate();
   const id: string | undefined = useLoaderData() as string | undefined;
-  const { isLoading, data: product } = useGetProductByIdQuery(id as string);
+  const { data: product } = useGetProductByIdQuery(id as string);
   // console.log(isLoading);
   const [amount, setAmount] = useState(1);
 
-  // const myArray = ["a", "b", 'c'];
-  // const arrayAsString = JSON.stringify(myArray);
-  // console.log(arrayAsString);
-
-  // console.log(JSON.stringify(product, null, 2));
+  const addToCart = () => {
+    toast({
+      title: "Yay! Item added to cart",
+    });
+    navigate("/products/cart");
+    return;
+  };
 
   return (
     <div className="">
@@ -65,8 +70,8 @@ export function SingleProduct() {
       </section>
 
       <div className="py-10 body gap-4">
-        <Link to="/products">
-          <p className="flex items-center gap-2 text-baseAccent cursor-pointer hover:underline">
+        <Link to="/products" className="w-max">
+          <p className="flex items-center gap-2 text-baseAccent cursor-pointer hover:underline w-max">
             <MoveLeft /> Back to products
           </p>
         </Link>
@@ -129,6 +134,7 @@ export function SingleProduct() {
                 size="lg"
                 variant="base"
                 className="rounded-full flex items-center gap-2 px-8 w-full"
+                onClick={addToCart}
               >
                 Add To Cart
               </Button>

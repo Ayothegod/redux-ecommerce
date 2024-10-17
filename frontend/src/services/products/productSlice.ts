@@ -2,6 +2,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "../../store";
 import type {
+  cartItem,
+  cartModel,
   CreateProductRequest,
   CreateProductResponse,
   GetProductsResponse,
@@ -27,7 +29,7 @@ export const productApi = createApi({
   }),
   refetchOnFocus: true,
   refetchOnReconnect: true,
-  tagTypes: ["productModel"],
+  tagTypes: ["productModel", "cartModel"],
   endpoints: (builder) => {
     return {
       createProduct: builder.mutation<
@@ -75,9 +77,18 @@ export const productApi = createApi({
       }),
       getProductById: builder.query<productModel, string>({
         query: (id) => `products/${id}`,
-        transformResponse: (response: { data: GetSingleProductResponse }, _meta, _arg) =>
-          response.data.product,
+        transformResponse: (
+          response: { data: GetSingleProductResponse },
+          _meta,
+          _arg
+        ) => response.data.product,
         providesTags: ["productModel"],
+      }),
+      getCart: builder.query<cartItem, string>({
+        query: (id) => `cart/${id}`,
+        transformResponse: (response: { data: cartModel }, _meta, _arg) =>
+          response.data.cart,
+        providesTags: ["cartModel"],
       }),
     };
   },
@@ -91,4 +102,6 @@ export const {
   useLazyGetAllProductsQuery,
   useGetProductByIdQuery,
   useLazyGetProductByIdQuery,
+  useGetCartQuery,
+  useLazyGetCartQuery
 } = productApi;

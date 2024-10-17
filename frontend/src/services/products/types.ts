@@ -11,6 +11,30 @@ export interface productModel {
   updatedAt: Date;
 }
 
+export interface itemProduct {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  quantity: number;
+  productUrl: string;
+  productName: string;
+  productPrice: number;
+  cartId: string;
+  productId: string;
+}
+
+export interface cartItem {
+  id: string;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  items: itemProduct[];
+}
+
+export interface cartModel {
+  cart: cartItem;
+}
+
 // export interface ProductTableModel {
 //   id: string;
 //   name: string;

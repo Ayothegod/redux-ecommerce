@@ -23,9 +23,12 @@ const cartRoute = auth
         );
       }
 
-      const cart = await prisma.cart.findMany({
+      const cart = await prisma.cart.findUnique({
         where: {
           userId: userId,
+        },
+        include: {
+          items: true,
         },
       });
 
@@ -58,6 +61,16 @@ const cartRoute = auth
 
       const { productId, quantity } = result.data;
 
+      const product = await prisma.product.findUnique({
+        where: {
+          id: productId,
+        },
+      });
+
+      if (!product) {
+        return;
+      }
+
       let cart = await prisma.cart.findUnique({
         where: {
           userId: id,
@@ -75,6 +88,9 @@ const cartRoute = auth
               create: {
                 productId,
                 quantity,
+                productName: product.name,
+                productPrice: product.price,
+                productUrl: product.imageUrl,
               },
             },
           },
@@ -103,6 +119,9 @@ const cartRoute = auth
               cartId: cart.id,
               productId,
               quantity,
+              productName: product.name,
+              productPrice: product.price,
+              productUrl: product.imageUrl,
             },
           });
         }
@@ -265,30 +284,30 @@ const cartRoute = auth
       const user: any = c.get("user");
       const { id } = user;
       const { productId } = body;
-  
+
       // Find the cart
       const cart = await prisma.cart.findUnique({
         where: { userId: id },
       });
-  
+
       if (!cart) {
         return c.json({ message: "Cart not found", data: null }, 404);
       }
-  
+
       const cartItem = await prisma.cartItem.findFirst({
         where: {
           cartId: cart.id,
           productId,
         },
       });
-  
+
       if (!cartItem) {
         return c.json({ message: "Item not found in cart", data: null }, 404);
       }
-  
+
       // Decrease quantity
       const newQuantity = cartItem.quantity - 1;
-  
+
       if (newQuantity <= 0) {
         await prisma.cartItem.delete({
           where: { id: cartItem.id },
