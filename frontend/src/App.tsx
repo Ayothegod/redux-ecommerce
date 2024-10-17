@@ -13,6 +13,7 @@ import { SingleProduct } from "./routes/shopper/SingleProduct";
 import { AuthState } from "./services/auth/types";
 import { useAppSelector } from "./store";
 import { Cart } from "./routes/shopper/Cart";
+import { ShopperLayout } from "./layouts/ShopperLayout";
 
 export function App() {
   let authState: AuthState = {
@@ -48,30 +49,34 @@ export function App() {
       loader: rootLoader,
     },
     {
-      path: "/products",
-      element: <Products />,
-      errorElement: <RootError />,
-      loader: rootLoader,
+      element: (
+        <ShopperLayout
+          authState={authState}
+          isAuthenticated={isAuthenticated}
+        />
+      ),
+      children: [
+        {
+          path: "/products",
+          element: <Products />,
+          errorElement: <RootError />,
+          loader: rootLoader,
+        },
+        {
+          path: "/products/:id",
+          element: <SingleProduct />,
+          errorElement: <RootError />,
+          loader: async ({ params }) => {
+            return params.id;
+          },
+        },
+        {
+          path: "/products/cart",
+          element: <Cart authState={authState} />,
+          errorElement: <RootError />,
+        },
+      ],
     },
-    {
-      path: "/products/:id",
-      element: <SingleProduct />,
-      errorElement: <RootError />,
-      loader: async ({ params }) => {
-        return params.id;
-      },
-    },
-    {
-      path: "/products/cart",
-      element: <Cart  authState={authState} />,
-      errorElement: <RootError />,
-    },
-    // {
-    //   element: <ShopperLayout/>,
-    //   children: [
-
-    //   ]
-    // },
     {
       element: <AuthLayout />,
       children: [

@@ -1,6 +1,4 @@
-import { Footer } from "@/components/base/Footer";
-import { Header } from "@/components/base/Header";
-import { Info } from "@/components/base/Info";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HandleImage } from "@/components/seller/HandleImage";
 import {
   Breadcrumb,
@@ -12,7 +10,10 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { useGetProductByIdQuery } from "@/services/products/productSlice";
+import {
+  useAddToCartMutation,
+  useGetProductByIdQuery,
+} from "@/services/products/productSlice";
 import { Heart, Minus, MoveLeft, Pin, Plus } from "lucide-react";
 import { useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
@@ -21,22 +22,49 @@ export function SingleProduct() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const id: string | undefined = useLoaderData() as string | undefined;
-  const { data: product } = useGetProductByIdQuery(id as string);
-  // console.log(isLoading);
-  const [amount, setAmount] = useState(1);
 
-  const addToCart = () => {
-    toast({
-      title: "Yay! Item added to cart",
-    });
+  const { data: product } = useGetProductByIdQuery(id as string);
+  const [addItemToCart] = useAddToCartMutation();
+  // console.log(JSON.stringify(product, null, 2));
+
+  const [amount, setAmount] = useState(1);
+  const addCart = async () => {
+    const body = { productId: product?.id, quantity: amount };
+    try {
+      const response = await addItemToCart(body).unwrap();
+      console.log(response);
+
+      toast({
+        title: "Yay! Item added to cart",
+      });
+      return;
+    } catch (error: any) {
+      console.log({ error });
+      if (error.data) {
+        return toast({
+          variant: "destructive",
+          description: `${error.data.message}`,
+        });
+      }
+
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        });
+        return null;
+      }
+    }
+  };
+
+  const buyNow = () => {
     navigate("/products/cart");
-    return;
   };
 
   return (
     <div className="">
       <section className="bg-base">
-        <Header />
         <div className="py-10 md:py-20 text-white flex items-center justify-center">
           <Breadcrumb>
             <BreadcrumbList>
@@ -127,6 +155,7 @@ export function SingleProduct() {
                 size="lg"
                 variant="basePrimary"
                 className="rounded-full flex items-center gap-2 px-8 w-full"
+                onClick={buyNow}
               >
                 Buy Now
               </Button>
@@ -134,7 +163,7 @@ export function SingleProduct() {
                 size="lg"
                 variant="base"
                 className="rounded-full flex items-center gap-2 px-8 w-full"
-                onClick={addToCart}
+                onClick={addCart}
               >
                 Add To Cart
               </Button>
@@ -145,9 +174,6 @@ export function SingleProduct() {
           </div>
         </div>
       </div>
-
-      <Info />
-      <Footer />
     </div>
   );
 }

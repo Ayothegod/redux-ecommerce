@@ -1,22 +1,30 @@
-import { Outlet } from "react-router-dom";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Footer } from "@/components/base/Footer";
 import { Header } from "@/components/base/Header";
+import { Info } from "@/components/base/Info";
+import { AuthState } from "@/services/auth/types";
+import { useGetCartQuery } from "@/services/products/productSlice";
+import { Outlet } from "react-router-dom";
 
-export function ShopperLayout() {
+export function ShopperLayout({
+  isAuthenticated,
+  authState,
+}: {
+  isAuthenticated: boolean;
+  authState: AuthState;
+}) {
+  const { id }: any = authState.user;
+  const { data } = useGetCartQuery(id as string);
+  // console.log(data);
+
   return (
     <div className="">
       <section className="bg-base">
-        <Header />
+        <Header isAuthenticated={isAuthenticated} items={data} />
       </section>
-      ShopperLayoiuu
       <Outlet />
+      <Info />
+      <Footer />
     </div>
   );
 }

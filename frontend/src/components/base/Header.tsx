@@ -1,18 +1,23 @@
-import { baseNav } from "@/lib/data";
-import clsx from "clsx";
+import { cartItem } from "@/services/products/types";
 import { Heart, ShoppingBag, User } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Logo } from "./Logo";
 
-export function Header() {
-  const location = useLocation();
-  const path = location.pathname;
+export function Header({
+  isAuthenticated,
+  items,
+}: {
+  isAuthenticated: boolean;
+  items: cartItem | undefined;
+}) {
+  // const location = useLocation();
+  // const path = location.pathname;
 
   return (
     <div className="body flex items-center justify-between h-12">
       <Logo className="text-3xl text-white" />
 
-      <ul className="flex gap-4 md:gap-8">
+      {/* <ul className="flex gap-4 md:gap-8">
         {baseNav.map((data) => (
           <Link
             to={data.url}
@@ -26,25 +31,31 @@ export function Header() {
             <li>{data.title}</li>
           </Link>
         ))}
-      </ul>
-
-      <div className="text-white/70 flex">
-        <Link to="/account" className="hidden">
-          <div className="p-1 rounded-md border border-transparent hover:border-white transition-colors duration-200 ease-in-out cursor-pointer">
-            <Heart className="hover:text-white" />
-          </div>
-        </Link>{" "}
-        <Link to="/cart">
-          <div className="p-1 rounded-md border border-transparent hover:border-white transition-colors duration-200 ease-in-out cursor-pointer">
-            <ShoppingBag className="hover:text-white" />
-          </div>
-        </Link>
-        <Link to="/account">
-          <div className="p-1 rounded-md border border-transparent hover:border-white transition-colors duration-200 ease-in-out cursor-pointer">
-            <User className="hover:text-white" />
-          </div>
-        </Link>
-      </div>
+      </ul> */}
+      {isAuthenticated ? (
+        <div className="text-white/70 flex">
+          <Link to="/account" className="hidden">
+            <div className="p-1 rounded-md border border-transparent hover:border-white transition-colors duration-200 ease-in-out cursor-pointer">
+              <Heart className="hover:text-white" />
+            </div>
+          </Link>{" "}
+          <Link to="/cart" className="relative">
+            <div className="absolute -top-1 -right-1 bg-white w-5 h-5 flex items-center justify-center rounded-full text-base text-sm">
+              {items?.items.length}
+            </div>
+            <div className="p-1 rounded-md border border-transparent hover:border-white transition-colors duration-200 ease-in-out cursor-pointer">
+              <ShoppingBag className="hover:text-white" />
+            </div>
+          </Link>
+          <Link to="/account">
+            <div className="p-1 rounded-md border border-transparent hover:border-white transition-colors duration-200 ease-in-out cursor-pointer">
+              <User className="hover:text-white" />
+            </div>
+          </Link>
+        </div>
+      ) : (
+        "Login"
+      )}
     </div>
   );
 }

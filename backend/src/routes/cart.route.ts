@@ -52,6 +52,7 @@ const cartRoute = auth
       const body = await c.req.json();
       const user: any = c.get("user");
       const { id } = user;
+      // log(body, user)
 
       const result = await cartItemSchema.safeParse(body);
       if (result.error) {
@@ -135,7 +136,7 @@ const cartRoute = auth
       return c.json(
         {
           message: "Item added to cart successfully",
-          data: { cart: updatedCart },
+          data: {},
         },
         200
       );

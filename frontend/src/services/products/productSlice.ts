@@ -29,7 +29,7 @@ export const productApi = createApi({
   }),
   refetchOnFocus: true,
   refetchOnReconnect: true,
-  tagTypes: ["productModel", "cartModel"],
+  tagTypes: ["productModel", "cartModel", "userCart"],
   endpoints: (builder) => {
     return {
       createProduct: builder.mutation<
@@ -88,7 +88,21 @@ export const productApi = createApi({
         query: (id) => `cart/${id}`,
         transformResponse: (response: { data: cartModel }, _meta, _arg) =>
           response.data.cart,
-        providesTags: ["cartModel"],
+        providesTags: ["userCart"],
+      }),
+      addToCart: builder.mutation<
+        string,
+        { productId: string | undefined; quantity: number }
+      >({
+        query: (body) => ({
+          url: "cart/add",
+          method: "POST",
+          credentials: "include",
+          body: body,
+        }),
+        transformResponse: (response: { message: string }, _meta, _arg) =>
+          response.message,
+        invalidatesTags: ["userCart"],
       }),
     };
   },
@@ -103,5 +117,6 @@ export const {
   useGetProductByIdQuery,
   useLazyGetProductByIdQuery,
   useGetCartQuery,
-  useLazyGetCartQuery
+  useLazyGetCartQuery,
+  useAddToCartMutation,
 } = productApi;

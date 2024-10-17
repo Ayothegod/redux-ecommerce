@@ -76,3 +76,12 @@ export interface CreateProductResponse {
     name: string;
   };
 }
+
+export interface CreateProductResponse {
+  message: string;
+  statusCode: number;
+  data: {
+    imagePublicId: string;
+    name: string;
+  };
+}

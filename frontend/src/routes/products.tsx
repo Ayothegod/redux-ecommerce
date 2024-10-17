@@ -1,6 +1,3 @@
-import { Footer } from "@/components/base/Footer";
-import { Header } from "@/components/base/Header";
-import { Info } from "@/components/base/Info";
 import { HandleImage } from "@/components/seller/HandleImage";
 import {
   Breadcrumb,
@@ -41,7 +38,6 @@ export function Products() {
   return (
     <div className="">
       <section className="bg-base">
-        <Header />
         <div className="py-10 md:py-20 text-white flex items-center justify-center">
           <Breadcrumb>
             <BreadcrumbList>
@@ -129,8 +125,6 @@ export function Products() {
         </div>
       </div>
 
-      <Info />
-      <Footer />
     </div>
   );
 }

@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CartTable } from "@/components/base/CartTable";
-import { Footer } from "@/components/base/Footer";
-import { Header } from "@/components/base/Header";
-import { Info } from "@/components/base/Info";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -31,7 +28,6 @@ export function Cart({ authState }: { authState: AuthState }) {
   return (
     <div className="">
       <section className="bg-base">
-        <Header />
         <div className="py-10 md:py-20 text-white flex items-center justify-center">
           <Breadcrumb>
             <BreadcrumbList>
@@ -109,9 +105,6 @@ export function Cart({ authState }: { authState: AuthState }) {
           </div>
         </aside>
       </div>
-
-      <Info />
-      <Footer />
     </div>
   );
 }
