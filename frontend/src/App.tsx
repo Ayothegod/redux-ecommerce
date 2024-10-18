@@ -113,7 +113,7 @@ export function App() {
         {
           path: "/auth/register",
           element: (
-            <Register isAuthenticated={isAuthenticated} authState={authState} />
+            <Register />
           ),
           errorElement: <RootError />,
         },

@@ -61,6 +61,13 @@ cp .env.example .env
 ```
 
 - Update the .env file with your Cloudinary connection details and other necessary environment variables.
+#### Run db migartions
+
+```
+pnpm run db:migrate or npm run db:migrate
+```
+
+- Update the .env file with your Cloudinary connection details and other necessary environment variables.
 
 ### Run the backend Server
 
