@@ -100,7 +100,7 @@ export function Products() {
                       </div>
                     </Link>
                     <aside className="p-2 rounded-full bg-baseAccent w-max text-white cursor-pointer group-hover">
-                      <Link tto={`/products/${product.id}`}>
+                      <Link to={`/products/${product.id}`}>
                         <ShoppingBag className="h-5 w-5 group:scale-125" />
                       </Link>
                     </aside>
