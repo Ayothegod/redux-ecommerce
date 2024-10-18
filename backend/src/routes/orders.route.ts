@@ -37,32 +37,32 @@ const productsOrders = auth
         );
       }
 
-      // // Extract product IDs from the order items
-      // const productIds = orderItems.map((item: OrderItem) => item.productId);
+      // Extract product IDs from the order items
+      const productIds = orderItems.map((item: OrderItem) => item.productId);
 
-      // // Check for existing pending orders with the same products and shopper
-      // const existingOrder = await prisma.order.findFirst({
-      //   where: {
-      //     shopperId: user.id,
-      //     status: "PENDING",
-      //     orderItems: {
-      //       some: {
-      //         productId: { in: productIds },
-      //       },
-      //     },
-      //   },
-      //   include: { orderItems: true },
-      // });
+      // Check for existing pending orders with the same products and shopper
+      const existingOrder = await prisma.order.findFirst({
+        where: {
+          shopperId: user.id,
+          status: "PENDING",
+          orderItems: {
+            some: {
+              productId: { in: productIds },
+            },
+          },
+        },
+        include: { orderItems: true },
+      });
 
-      // if (existingOrder) {
-      //   return c.json(
-      //     {
-      //       message: "You already have a pending order with the same items.",
-      //       data: null,
-      //     },
-      //     403
-      //   );
-      // }
+      if (existingOrder) {
+        return c.json(
+          {
+            message: "You already have a pending order with the same items.",
+            data: null,
+          },
+          403
+        );
+      }
 
       const newOrder = await prisma.order.create({
         data: {
@@ -222,6 +222,26 @@ const productsOrders = auth
       c.json({ message: error.message, data: null }, 500);
     }
   })
+  .get("/seller/all/:id", authMiddleware("SELLER"), async (c) => {
+    try {
+      const seller: any = c.get("user");
+
+      const order = await prisma.orderItem.findUnique({
+        where: { sellerId: seller.id, id: seller.id },
+        include: { product: true, order: true },
+      });
+
+      return c.json(
+        {
+          message: "All seller ordered items returned successfully!",
+          data: { order },
+        },
+        200
+      );
+    } catch (error: any) {
+      c.json({ message: error.message, data: null }, 500);
+    }
+  })
   // LET SELLER UPDATE STATUS OF THEIR ITEM IN AN ORDER (ORDERITEM)
   .put("/orders/:orderId/items/:itemId/status", async (c) => {
     try {
@@ -261,122 +281,5 @@ const productsOrders = auth
       c.json({ message: error.message, statusCode: 500, data: null });
     }
   });
-// .post("/products", async (c) => {
-//   try {
-//     const body = await c.req.json();
-
-//     const result = await productSchema.safeParse(body);
-//     if (result.error) {
-//       const errorMessages = result.error.issues.map((issue) => issue.message);
-//       return c.json({ message: errorMessages.join(", ") });
-//     }
-
-//     const sellerDetails: any = c.get("seller");
-
-//     const product = await prisma.product.create({
-//       data: {
-//         name: result.data.name,
-//         description: result.data.description,
-//         price: result.data.price,
-//         sellerId: sellerDetails.id,
-//         category: result.data.category,
-//         tags: ["car"],
-//         imageUrl: result.data.imageUrl || "",
-//       },
-//     });
-
-//     log(product);
-
-//     c.status(201);
-//     return c.json({
-//       message: "Product registered successfully!",
-//       statusCode: 201,
-//       data: {},
-//     });
-//   } catch (error: any) {
-//     log(error);
-//     c.status(400);
-//     c.json({ message: error.message, statusCode: 500, data: null });
-//   }
-// })
-// .put("/products/:id", async (c) => {
-//   try {
-//     const id = c.req.param("id");
-//     const body = await c.req.json();
-
-//     const result = await updateProductSchema.safeParse(body);
-//     if (result.error) {
-//       const errorMessages = result.error.issues.map((issue) => issue.message);
-//       return c.json({ message: errorMessages.join(", ") });
-//     }
-
-//     const sellerDetails: any = c.get("seller");
-
-//     const updatedProduct = await prisma.product.update({
-//       where: {
-//         id: id,
-//       },
-//       data: {
-//         ...(result.data.name && { name: result.data.name }),
-//         ...(result.data.description && {
-//           description: result.data.description,
-//         }),
-//         ...(result.data.price && { price: result.data.price }),
-//         ...(result.data.category && { category: result.data.category }),
-//         ...(result.data.tags && { tags: result.data.tags }),
-//         ...(result.data.imageUrl && { imageUrl: result.data.imageUrl }),
-//         sellerId: sellerDetails.id,
-//       },
-//     });
-//     log(updatedProduct);
-
-//     c.status(201);
-//     return c.json({
-//       message: "Product updated successfully!",
-//       statusCode: 201,
-//       data: { updatedProduct },
-//     });
-//   } catch (error: any) {
-//     c.status(500);
-//     c.json({ message: error.message, statusCode: 500, data: null });
-//   }
-// })
-// .delete("/products/:id", async (c) => {
-//   try {
-//     const id = c.req.param("id");
-
-//     const deletedProduct = await prisma.product.delete({ where: { id: id } });
-//     log(deletedProduct);
-
-//     c.status(200);
-//     return c.json({
-//       message: "Product deleted successfully!",
-//       statusCode: 201,
-//       data: { deletedProduct },
-//     });
-//   } catch (error: any) {
-//     log(error);
-//     c.status(500);
-//     c.json({ message: error.message, statusCode: 500, data: null });
-//   }
-// })
-// .get("/products/category/:categoryName", async (c) => {
-//   try {
-//     const categoryName = c.req.param("categoryName");
-
-//     // const productByCategory = await prisma.product
-//     // log(product);
-
-//     c.status(200);
-//     return c.json({
-//       message: "Product registered successfully!",
-//       statusCode: 200,
-//       data: {},
-//     });
-//   } catch (error: any) {
-//     c.status(400);
-//     c.json({ message: error.message, statusCode: 500, data: null });
-//   }
-// });
 
 export default productsOrders;

@@ -56,3 +56,11 @@ export interface UserResponse {
   email: string;
   accountType: string;
 }
+
+export interface AdminCreateRegisterRequest {
+  firstName: string;
+  lastName: string;
+  accountType: string;
+  email: string;
+  password: string;
+}

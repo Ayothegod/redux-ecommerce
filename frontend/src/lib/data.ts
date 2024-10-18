@@ -2,7 +2,7 @@ import {
   LayoutDashboard,
   NotebookPen,
   Settings,
-  SquareChartGantt
+  SquareChartGantt,
 } from "lucide-react";
 
 export const sidebarData = [
@@ -17,6 +17,15 @@ export const sidebarData = [
   // { id: 4, title: "Customers", url: "/Accounts", icon: Users },
   // { id: 5, title: "Messages", url: "/Accounts", icon: MessageSquare },
   { id: 6, title: "Settings", url: "/seller/settings", icon: Settings },
+];
+export const adminSidebar = [
+  {
+    id: 1,
+    title: "Dashboard",
+    url: "/admin/dashboard",
+    icon: LayoutDashboard,
+  },
+  { id: 2, title: "Settings", url: "/admin/settings", icon: Settings },
 ];
 
 export const baseNav = [

@@ -17,6 +17,13 @@ import { ShopperLayout } from "./layouts/ShopperLayout";
 import { Checkout } from "./routes/shopper/Checkout";
 import { CompleteOrder } from "./routes/shopper/CompleteOrder";
 import { SellerOrders } from "./routes/seller/orders";
+import { SellerSettings } from "./routes/seller/settings";
+import { SingleOrder } from "./routes/seller/SingleOrder";
+import { UserAccount } from "./routes/shopper/Account";
+import { AdminLayout } from "./layouts/AdminLayout";
+import { AdminDashboard } from "./routes/admin/dashboard";
+import { AdminSettings } from "./routes/admin/settings";
+import { AdminCreateUser } from "./routes/admin/createUser";
 
 export function App() {
   let authState: AuthState = {
@@ -88,6 +95,11 @@ export function App() {
           element: <CompleteOrder />,
           errorElement: <RootError />,
         },
+        {
+          path: "/account",
+          element: <UserAccount />,
+          errorElement: <RootError />,
+        },
       ],
     },
     {
@@ -95,9 +107,7 @@ export function App() {
       children: [
         {
           path: "/auth/login",
-          element: (
-            <Login authState={authState} isAuthenticated={isAuthenticated} />
-          ),
+          element: <Login />,
           errorElement: <RootError />,
         },
         {
@@ -129,6 +139,37 @@ export function App() {
         {
           path: "/seller/orders",
           element: <SellerOrders />,
+        },
+        {
+          path: "/seller/settings",
+          element: <SellerSettings />,
+        },
+        {
+          path: "/seller/orders/:id",
+          element: <SingleOrder />,
+          errorElement: <RootError />,
+          loader: async ({ params }) => {
+            return params.id;
+          },
+        },
+      ],
+    },
+    {
+      element: (
+        <AdminLayout authState={authState} isAuthenticated={isAuthenticated} />
+      ),
+      children: [
+        {
+          path: "/admin/dashboard",
+          element: <AdminDashboard />,
+        },
+        {
+          path: "/admin/settings",
+          element: <AdminSettings />,
+        },
+        {
+          path: "/admin/user/new",
+          element: <AdminCreateUser />,
         },
       ],
     },

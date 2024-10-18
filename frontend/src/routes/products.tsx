@@ -20,7 +20,7 @@ export function Products() {
     limit: 10,
   });
   // console.log(JSON.stringify(data, null, 2));
-  
+
   const nextPage = () => {
     if (data && data?.products.length < data?.totalCount) {
       setCurrentPage((prev) => prev + 1);
@@ -100,7 +100,9 @@ export function Products() {
                       </div>
                     </Link>
                     <aside className="p-2 rounded-full bg-baseAccent w-max text-white cursor-pointer group-hover">
-                      <ShoppingBag className="h-5 w-5 group:scale-125" />
+                      <Link tto={`/products/${product.id}`}>
+                        <ShoppingBag className="h-5 w-5 group:scale-125" />
+                      </Link>
                     </aside>
                   </div>
                 </div>
@@ -124,7 +126,6 @@ export function Products() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }

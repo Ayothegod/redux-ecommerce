@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { HandleImage } from "@/components/seller/HandleImage";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 // export const products: productModel[] = [
 //   {
@@ -156,10 +157,14 @@ export const OrdersColumns: ColumnDef<SellerOrderData>[] = [
     accessorKey: "id",
     header: "Order No",
     cell: ({ row }) => {
-      const price: any = row.getValue("id");
-      const orderNo = price.slice(10, 20);
+      const id: any = row.getValue("id");
+      const orderNo = id.slice(10, 20);
 
-      return <div className="">#{orderNo}</div>;
+      return (
+        <Link to={`/seller/orders/${id}`}>
+          <div className="">#{orderNo}</div>
+        </Link>
+      );
     },
   },
   {

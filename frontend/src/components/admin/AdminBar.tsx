@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Label } from "../ui/label";
 // absolute top-[50%] left-[10%] translate-x-[-50%] translate-y-[-50%] cursor-pointer
 
-export function TopBar({ authState }: { authState: AuthState }) {
+export function AdminBar({ authState }: { authState: AuthState }) {
   // console.log(authState, isAuthenticated);
 
   return (
@@ -36,7 +36,7 @@ export function TopBar({ authState }: { authState: AuthState }) {
             <Link to="/seller/settings">
               <aside>
                 <p className="text-sm leading-3">{authState.user?.email}</p>
-                <Label className="font-light text-xs">Seller Account</Label>
+                <Label className="font-light text-xs">Admin Account</Label>
               </aside>
             </Link>
             <div>{/* <ChevronDown className="cursor-pointer" /> */}</div>

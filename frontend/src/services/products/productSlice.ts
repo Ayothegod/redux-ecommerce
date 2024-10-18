@@ -143,6 +143,12 @@ export const productApi = createApi({
         ) => response.data.sellerOrders,
         providesTags: ["Order"],
       }),
+      getOrderById: builder.query<any, string>({
+        query: (id) => `orders/seller/all/${id}`,
+        transformResponse: (response: { data: any }, _meta, _arg) =>
+          response.data,
+        providesTags: ["Product"],
+      }),
     };
   },
 });
@@ -160,5 +166,6 @@ export const {
   useAddToCartMutation,
   useRemoveFromCartMutation,
   useCreateOrderMutation,
-  useGetAllSellerOrdersQuery
+  useGetAllSellerOrdersQuery,
+  useGetOrderByIdQuery
 } = productApi;

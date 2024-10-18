@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from "@reduxjs/toolkit";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
+  AdminCreateRegisterRequest,
   AuthState,
   LoginRequest,
   LoginResponse,
@@ -14,7 +17,9 @@ export const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000/api/v1/",
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).auth.token;
+      const token =
+        (getState() as RootState).auth.token ||
+        JSON.parse(sessionStorage.getItem("token") || "null");
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -22,6 +27,9 @@ export const authApi = createApi({
     },
     credentials: "include",
   }),
+  refetchOnFocus: true,
+  refetchOnReconnect: true,
+  tagTypes: ["Admin"],
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (credentials) => ({
@@ -46,11 +54,42 @@ export const authApi = createApi({
         body: data,
       }),
     }),
+    adminCreateUser: builder.mutation<
+      { message: string; data: null },
+      AdminCreateRegisterRequest
+    >({
+      query: (data) => ({
+        url: "auth/admin/createUser",
+        method: "POST",
+        body: data,
+        credentials: "include",
+      }),
+      invalidatesTags: ["Admin"],
+    }),
+    getUsers: builder.query<any, void>({
+      query: () => ({
+        url: `auth/admin/getUsers`,
+      }),
+      providesTags: ["Admin"],
+    }),
+    deleteUser: builder.query<{ message: string; data: null }, string>({
+      query: (id) => ({
+        url: `auth/admin/deleteUser/${id}`,
+      }),
+      providesTags: ["Admin"],
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation } =
-  authApi;
+export const {
+  useLoginMutation,
+  useLogoutMutation,
+  useRegisterMutation,
+  useAdminCreateUserMutation,
+  useGetUsersQuery,
+  useDeleteUserQuery,
+  useLazyDeleteUserQuery,
+} = authApi;
 
 // The slice
 const authSlice = createSlice({
@@ -59,13 +98,26 @@ const authSlice = createSlice({
     token: null,
     user: null,
   } as AuthState,
-  reducers: {},
+  reducers: {
+    clearState: (state) => {
+      const isAuthenticated = sessionStorage.getItem("isAuthenticated");
+      if (isAuthenticated === "true") {
+        sessionStorage.removeItem("isAuthenticated");
+        sessionStorage.removeItem("user");
+        sessionStorage.removeItem("token");
+
+        state.token = null;
+        state.user = null;
+      }
+      return state;
+    },
+  },
   extraReducers(builder) {
     builder.addMatcher(
       authApi.endpoints.login.matchFulfilled,
       (state, { payload }) => {
         // console.log("Login done");
-        
+
         state.token = payload.data?.accessToken;
         state.user = {
           id: payload.data?.userRes.id,
@@ -87,7 +139,6 @@ const authSlice = createSlice({
     builder.addMatcher(
       authApi.endpoints.register.matchFulfilled,
       (state, { payload }) => {
-        
         state.token = payload.data?.accessToken;
         state.user = {
           id: payload.data?.userRes.id,
@@ -102,7 +153,7 @@ const authSlice = createSlice({
           "token",
           `${JSON.stringify(payload.data?.accessToken)}`
         );
-        // console.log("Register done");
+        console.log("Register done");
         return state;
       }
     );
@@ -117,4 +168,4 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
-// export const { refreshAuthentication } = authSlice.actions;
+export const { clearState } = authSlice.actions;
