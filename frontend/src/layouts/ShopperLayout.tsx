@@ -20,7 +20,7 @@ export function ShopperLayout({
   return (
     <div className="">
       <section className="bg-base">
-        <Header isAuthenticated={isAuthenticated} items={data} />
+        <Header isAuthenticated={isAuthenticated} authState={authState} items={data} />
       </section>
       <Outlet />
       <Info />

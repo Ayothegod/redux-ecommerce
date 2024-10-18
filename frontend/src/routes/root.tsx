@@ -11,7 +11,6 @@ export function Root() {
         <Hero />
       </section>
 
-      {/* <Info /> */}
       <FeaturedCategory />
     </div>
   );

@@ -6,7 +6,7 @@ export function Logo({ className }: any) {
         className ? className : "text-white "
       }`}
     >
-      Logo
+      Shop Now
     </div>
   );
 }

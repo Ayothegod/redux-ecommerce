@@ -46,7 +46,7 @@ export function SellerLayout({
         <div className="hidden md:sticky h-screen md:top-0 md:flex md:w-60 border flex-shrink-0 px-2 py-4">
           <div className="w-full h-screen space-y-4">
             <div className="flex items-center gap-4 text-2xl font-bold">
-              <span className=" font-space-grotesk">E-corng</span>
+              <span className=" font-space-grotesk">Shop Now</span>
             </div>
 
             <ul className="flex flex-col gap-1">

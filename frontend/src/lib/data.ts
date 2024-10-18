@@ -35,7 +35,9 @@ export const baseNav = [
     url: "/",
   },
   { id: 2, title: "Products", url: "/products" },
-  { id: 4, title: "About Us", url: "/about" },
-  { id: 5, title: "Contact Us", url: "/contact" },
-  { id: 6, title: "Blog", url: "/blog" },
+  { id: 3, title: "Cart", url: "/products/cart" },
+
+  // { id: 4, title: "About Us", url: "/about" },
+  // { id: 5, title: "Contact Us", url: "/contact" },
+  // { id: 6, title: "Blog", url: "/blog" },
 ];

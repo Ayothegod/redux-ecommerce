@@ -9,8 +9,6 @@ This is an e-commerce application built with React, Redux, and Hono. The project
 - [Folder Structure](#folder-structure)
 - [API Endpoints](#api-endpoints)
 - [Technologies Used](#technologies-used)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
@@ -18,7 +16,9 @@ This is an e-commerce application built with React, Redux, and Hono. The project
 - Product listing and detail pages
 - Shopping cart functionality
 - Order management
-- Admin dashboard for product management
+- Admin dashboard for product management (Admin account is pre-configured)
+
+> **Important:** You cannot create an admin account through the registration flow. Only shoppers and sellers can register. Admin access must be configured manually by the app owner.
 
 ## Getting Started
 
@@ -67,10 +67,27 @@ cd backend
 pnpm run dev
 ```
 
-Environment Variables
+## Environment Variables
+
 Make sure to set up the necessary environment variables for the backend in a .env file. Refer to the .env.example for required variables.
 
-Folder Structure
+## User Registration
+
+Users can sign up as either shoppers or sellers:
+
+Shoppers can browse and purchase products.
+Sellers can list and manage their products.
+
+`Note: The admin role is reserved and cannot be created during the sign-up process. If you need admin privileges, they must be set manually in the database by updating the user's role to admin.`
+
+- you can do this by setting the users role - Admin using sqlite editor or on the prisma studio editor
+
+```
+cd backend
+pnpm run db:studio or pnpm prisma studio
+```
+
+## Folder Structure
 
 ```
 ecommerce-app/
@@ -82,3 +99,10 @@ ecommerce-app/
 │   ├── package.json # Backend dependencies
 ├── package.json     # pnpm workspace configuration
 ```
+
+## Technologies Used
+
+- Frontend: React, Redux, React Router, TailwindCSS
+- Backend: Hono, Node.js, Prisma, Express
+- Database: Sqlite (or any database you choose)
+- Others: Pnpm, Axios

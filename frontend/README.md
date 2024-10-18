@@ -1,50 +1,92 @@
-# React + TypeScript + Vite
+# E-commerce Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend for the e-commerce application built with **React**, **Vite**, **Redux**, and **TailwindCSS**. It allows users to browse products, add items to the shopping cart, place orders, and manage their profile. Sellers can manage their product listings, and admins have access to product and order management.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **User authentication** (login, registration)
+- **Product listing and detail pages**
+- **Shopping cart functionality**
+- **Order management for shoppers**
+- **Sellers can manage product listings**
+- **Role-based access** (Shoppers, Sellers, Admins)
 
-## Expanding the ESLint configuration
+> **Note:** Admins cannot be registered through the frontend. They need to be manually assigned in the database.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Technologies Used
 
-- Configure the top-level `parserOptions` property like this:
+- **React** - JavaScript library for building user interfaces
+- **Vite** - Fast build tool for modern web projects
+- **Redux** - State management
+- **TailwindCSS** - Utility-first CSS framework for styling
+- **React Router** - For routing
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Project Structure
+
+The project is structured as follows:
+
+## Getting Started
+
+To set up and run the frontend locally, follow these steps:
+
+### 1. Clone the Repository
+
+First, clone the repository if you haven't already:
+
+```bash
+git clone https://github.com/Ayothegod/redux-ecommerce
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### 2. Navigate to the Frontend Directory
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+cd redux-ecommerce/frontend
 ```
+
+### 3. Install Dependencies
+
+Run the following command to install the necessary packages:
+
+```bash
+pnpm install
+```
+
+or if you're using npm:
+
+```bash
+npm install
+```
+
+### 4. Set Up Environment Variables
+
+Create a .env file in the root of the frontend directory to define environment variables like the Cloudinary name
+
+```bash
+PUBLIC_CLOUDINARY_NAME
+```
+
+### 5. Running the Frontend
+
+Once everything is set up, you can run the development server using:
+
+```bash
+pnpm run dev
+```
+
+or if you're using npm:
+
+```bash
+npm run dev
+```
+Yaaaay You've made it, The frontend should now be running on http://localhost:5173/
+
+
+### Key Features
+
+- **Authentication** Pages: Login and Registration forms to authenticate users.
+- **Product Pages**: Displays product listings, with detailed product views.
+- **Shopping Cart**: Users can add products to their cart and proceed to checkout.
+- **Order Pages**: Shoppers can view and manage their past orders.
+- **Seller Dashboard**: Sellers can create, update, and delete their product listings.
+- **Admin Dashboard**: Admin can create users, delete user and also process orders.
+- **Role-Based Navigation**: Navigation and functionality are dynamically adjusted based on user roles.

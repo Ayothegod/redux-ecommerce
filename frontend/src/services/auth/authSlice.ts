@@ -153,7 +153,6 @@ const authSlice = createSlice({
           "token",
           `${JSON.stringify(payload.data?.accessToken)}`
         );
-        console.log("Register done");
         return state;
       }
     );

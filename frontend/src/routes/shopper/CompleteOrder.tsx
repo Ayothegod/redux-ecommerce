@@ -96,13 +96,15 @@ export function CompleteOrder() {
           </div>
 
           <div className="w-full bg-neutral-100 p-3 flex flex-col gap-4 md:flex-row-reverse">
-            <Button
-              className="w-full rounded-full"
-              variant="basePrimary"
-              // onClick={createOrder}
-            >
-              Return
-            </Button>
+            <Link to="/products" className="w-full">
+              <Button
+                className="w-full rounded-full"
+                variant="basePrimary"
+                // onClick={createOrder}
+              >
+                Return
+              </Button>
+            </Link>
           </div>
         </aside>
 

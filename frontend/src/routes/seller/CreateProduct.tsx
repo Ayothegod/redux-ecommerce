@@ -64,7 +64,6 @@ export function SellerCreateProduct() {
   const handleFileChange = (e: any) => {
     const file = e.target.files[0];
     if (file) {
-      console.log("Selected file:", file);
       setFile(file);
       previewFiles(file);
     } else {
@@ -81,18 +80,16 @@ export function SellerCreateProduct() {
       return;
     }
     const body = { ...data, image, tags };
-    console.log(body);
-
     try {
       const response = await createProduct(body).unwrap();
-      console.log({ response });
+      console.log(response);
 
       toast({
         title: `Product created successfully`,
       });
       return navigate("/seller/products");
     } catch (error: any) {
-      console.log({ error });
+      // console.log({ error });
 
       if (error.data) {
         return toast({
@@ -173,7 +170,12 @@ export function SellerCreateProduct() {
                   value={tag}
                   onChange={setTagValue}
                 />
-                <Button className="" type="button" onClick={addTags}>
+                <Button
+                  variant="basePrimary"
+                  className="rounded-full"
+                  type="button"
+                  onClick={addTags}
+                >
                   Add Tag
                 </Button>
               </div>
@@ -260,7 +262,11 @@ export function SellerCreateProduct() {
         </div>
 
         <div className="flex justify-end my-10">
-          <Button type="submit" className="w-full md:w-max">
+          <Button
+            variant="basePrimary"
+            type="submit"
+            className="rounded-full w-full md:w-max"
+          >
             {isLoading ? <Loader2 className="animate-spin" /> : "Add Product"}
           </Button>
         </div>

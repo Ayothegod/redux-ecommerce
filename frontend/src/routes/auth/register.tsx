@@ -1,28 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useRegisterMutation } from "@/services/auth/authSlice";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { registrationSchema } from "@/lib/schema";
+import { useRegisterMutation } from "@/services/auth/authSlice";
 // import { AuthState } from "@/services/auth/types";
-import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Label } from "@/components/ui/label";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { AuthState } from "@/services/auth/types";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { z } from "zod";
 
 type RegisterSchemaType = z.infer<typeof registrationSchema>;
 
-export function Register({
-  isAuthenticated,
-  authState,
-}: {
-  isAuthenticated: boolean;
-  authState: AuthState;
-}) {
+// {
+//   isAuthenticated,
+//   authState,
+// }: {
+//   isAuthenticated: boolean;
+//   authState: AuthState;
+// }
+
+export function Register() {
   const [register, { isLoading }] = useRegisterMutation();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ export function Register({
       console.log(response);
 
       toast({
-        title: `Welcome to Ecorn, ${response.data.userRes.accountType}`,
+        title: `Welcome to Shop Now, ${response.data.userRes.accountType}`,
         description: ``,
       });
 
@@ -51,7 +51,7 @@ export function Register({
       }
       return navigate("/");
     } catch (error: any) {
-      console.log({ error });
+      // console.log({ error });
 
       if (error.data) {
         toast({
@@ -72,21 +72,21 @@ export function Register({
     }
   };
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      if (authState.user?.accountType === "SHOPPER") {
-        return navigate("/");
-      }
-      if (authState.user?.accountType === "SELLER") {
-        return navigate("/seller/dashboard");
-      }
-    }
-    return;
-  }, [isAuthenticated, navigate, authState.user?.accountType]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     if (authState.user?.accountType === "SHOPPER") {
+  //       return navigate("/");
+  //     }
+  //     if (authState.user?.accountType === "SELLER") {
+  //       return navigate("/seller/dashboard");
+  //     }
+  //   }
+  //   return;
+  // }, [isAuthenticated, navigate, authState.user?.accountType]);
 
-  if (isAuthenticated) {
-    return null;
-  }
+  // if (isAuthenticated) {
+  //   return null;
+  // }
 
   return (
     <div className="bg-white flex flex-1 rounded-md p-4 items-center justify-center">

@@ -88,6 +88,14 @@ export const productApi = createApi({
         ) => response.data.product,
         providesTags: ["Product"],
       }),
+      deleteProduct: builder.mutation<{ message: string; data: null }, string>({
+        query: (id) => ({
+          url: `products/${id}`,
+          method: "DELETE",
+          credentials: "include",
+        }),
+        invalidatesTags: ["Product"],
+      }),
       getCart: builder.query<cartItem, string>({
         query: (id) => `cart/${id}`,
         transformResponse: (response: { data: cartModel }, _meta, _arg) =>
@@ -167,5 +175,6 @@ export const {
   useRemoveFromCartMutation,
   useCreateOrderMutation,
   useGetAllSellerOrdersQuery,
-  useGetOrderByIdQuery
+  useGetOrderByIdQuery,
+  useDeleteProductMutation
 } = productApi;

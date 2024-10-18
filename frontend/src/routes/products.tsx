@@ -61,9 +61,10 @@ export function Products() {
       </section>
 
       <div className="py-10 body flex gap-4">
-        <aside className="max-w-[22%] w-full">
+        <aside className="hidden max-w-[22%] w-full">
           <h2>Filter Options</h2>
         </aside>
+
         <div className="w-full">
           <aside className="flex items-center justify-between mb-4">
             <p>
@@ -73,7 +74,7 @@ export function Products() {
             <div>Sort by: Latest</div>
           </aside>
           {isLoading ? (
-            <div>Data is laoding</div>
+            <div className="text-center py-10">Data is loadding</div>
           ) : error ? (
             <div className="text-red-500">Error: Error laoding data</div>
           ) : (
@@ -81,7 +82,7 @@ export function Products() {
               {data?.products.map((product) => (
                 <div key={product.id} className="w-full flex flex-col gap-2">
                   <Link to={`/products/${product.id}`}>
-                    <div className="w-full h-48 rounded-md overflow-hidden">
+                    <div className="w-full h-48 md:h-72 rounded-md overflow-hidden">
                       <HandleImage
                         uploadedImage={product.imageUrl}
                         className="w-full h-full object-cover"

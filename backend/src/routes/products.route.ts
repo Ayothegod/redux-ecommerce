@@ -33,6 +33,9 @@ const sellerProductsRoute = auth
         prisma.product.findMany({
           skip: (pageNumber - 1) * limitNumber,
           take: limitNumber,
+          orderBy: {
+            createdAt: "desc",
+          },
         }),
         prisma.product.count(),
       ]);
@@ -145,7 +148,6 @@ const sellerProductsRoute = auth
           tags: true,
         },
       });
-      // log(product);
 
       return c.json(
         {
@@ -158,6 +160,26 @@ const sellerProductsRoute = auth
     } catch (error: any) {
       log(error);
       c.json({ message: error.message, statusCode: 500, data: null }, 500);
+    }
+  })
+  .delete("/:id", authMiddleware("SELLER"), async (c) => {
+    try {
+      const id = c.req.param("id");
+      console.log(id);
+
+      const deletedProduct = await prisma.product.delete({ where: { id: id } });
+      log(deletedProduct);
+
+      return c.json(
+        {
+          message: "Product deleted successfully!",
+          data: null,
+        },
+        200
+      );
+    } catch (error: any) {
+      log(error);
+      c.json({ message: error.message, data: null }, 500);
     }
   });
 // .put("/products/:id", async (c) => {
@@ -198,25 +220,6 @@ const sellerProductsRoute = auth
 //       data: { updatedProduct },
 //     });
 //   } catch (error: any) {
-//     c.status(500);
-//     c.json({ message: error.message, statusCode: 500, data: null });
-//   }
-// })
-// .delete("/products/:id", async (c) => {
-//   try {
-//     const id = c.req.param("id");
-
-//     const deletedProduct = await prisma.product.delete({ where: { id: id } });
-//     log(deletedProduct);
-
-//     c.status(200);
-//     return c.json({
-//       message: "Product deleted successfully!",
-//       statusCode: 201,
-//       data: { deletedProduct },
-//     });
-//   } catch (error: any) {
-//     log(error);
 //     c.status(500);
 //     c.json({ message: error.message, statusCode: 500, data: null });
 //   }

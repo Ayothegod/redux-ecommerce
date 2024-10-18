@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { cartItem } from "@/services/products/types";
 import { Heart, ShoppingBag, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
@@ -5,16 +6,41 @@ import { Logo } from "./Logo";
 import { baseNav } from "@/lib/data";
 import clsx from "clsx";
 import { Button } from "../ui/button";
+import { AuthState } from "@/services/auth/types";
+import { useEffect, useState } from "react";
 
 export function Header({
   isAuthenticated,
   items,
+  authState,
 }: {
   isAuthenticated: boolean;
   items: cartItem | undefined;
+  authState: AuthState;
 }) {
   const location = useLocation();
   const path = location.pathname;
+
+  const [role, setRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Check if the role is available in the authState
+    if (authState.user?.accountType) {
+      setRole(authState.user.accountType);
+    } else {
+      // If not in authState, check sessionStorage
+      const storedUser = sessionStorage.getItem("user");
+      if (storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          setRole(parsedUser.accountType || null); // Ensure we get the accountType
+        } catch (error) {
+          console.error("Error parsing sessionStorage user data:", error);
+          setRole(null);
+        }
+      }
+    }
+  }, [authState]);
 
   return (
     <div className="body flex items-center justify-between h-12">
@@ -50,11 +76,27 @@ export function Header({
               <ShoppingBag className="hover:text-white" />
             </div>
           </Link>
-          <Link to="/account">
-            <div className="p-1 rounded-md border border-transparent hover:border-white transition-colors duration-200 ease-in-out cursor-pointer">
-              <User className="hover:text-white" />
-            </div>
-          </Link>
+          {role === "SHOPPER" && (
+            <Link to="/account">
+              <div className="p-1 rounded-md border border-transparent hover:border-white transition-colors duration-200 ease-in-out cursor-pointer">
+                <User className="hover:text-white" />
+              </div>
+            </Link>
+          )}
+          {role === "SELLER" && (
+            <Link to="/seller/dashboard">
+              <div className="p-1 rounded-md border border-transparent hover:border-white transition-colors duration-200 ease-in-out cursor-pointer">
+                <User className="hover:text-white" />
+              </div>
+            </Link>
+          )}
+          {role === "ADMIN" && (
+            <Link to="/admin/dashboard">
+              <div className="p-1 rounded-md border border-transparent hover:border-white transition-colors duration-200 ease-in-out cursor-pointer">
+                <User className="hover:text-white" />
+              </div>
+            </Link>
+          )}
         </div>
       ) : (
         <Link to="/auth/login">

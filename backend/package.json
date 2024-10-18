@@ -6,7 +6,8 @@
     "build": "prisma migrate deploy && prisma generate && tsc",
     "start": "node dist/index.js",
     "deploy:app": "tsc && node update-imports.cjs",
-    "db:migrate": "prisma migrate dev"
+    "db:migrate": "prisma migrate dev",
+    "db:studio":"prisma studio"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.1",
