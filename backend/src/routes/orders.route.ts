@@ -92,7 +92,7 @@ const productsOrders = auth
             orderId: newOrder.id,
             date: newOrder.createdAt,
             items: newOrder.orderItems.length,
-            amount: newOrder.totalAmount
+            amount: newOrder.totalAmount,
           },
         },
         201
@@ -201,25 +201,25 @@ const productsOrders = auth
     }
   })
   // LET SELLER SEE THEIR ITEMS THAT ARE PART OF ORDERS
-  .get("/seller/orders", async (c) => {
+  .get("/seller/all", authMiddleware("SELLER"), async (c) => {
     try {
-      const userDetails: any = c.get("user");
+      const seller: any = c.get("user");
 
       const sellerOrders = await prisma.orderItem.findMany({
-        where: { sellerId: userDetails.id },
+        where: { sellerId: seller.id },
         include: { product: true, order: true },
       });
-      log(sellerOrders);
+      // log(sellerOrders);
 
-      c.status(200);
-      return c.json({
-        message: "All seller ordered items returned successfully!",
-        statusCode: 200,
-        data: { sellerOrders },
-      });
+      return c.json(
+        {
+          message: "All seller ordered items returned successfully!",
+          data: { sellerOrders },
+        },
+        200
+      );
     } catch (error: any) {
-      c.status(400);
-      c.json({ message: error.message, statusCode: 500, data: null });
+      c.json({ message: error.message, data: null }, 500);
     }
   })
   // LET SELLER UPDATE STATUS OF THEIR ITEM IN AN ORDER (ORDERITEM)

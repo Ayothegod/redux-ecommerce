@@ -1,30 +1,25 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { DataTable } from "@/components/seller/ProductsTable";
 import { Button } from "@/components/ui/button";
-import { productsColumns } from "@/lib/tableColumns.tsx";
-import { AuthState } from "@/services/auth/types";
-import { useGetAllSellerProductsQuery } from "@/services/products/productSlice";
+import { OrdersColumns } from "@/lib/tableColumns";
+import { useGetAllSellerOrdersQuery } from "@/services/products/productSlice";
 import { PlusCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export function SellerProducts({ authState }: { authState: AuthState }) {
-  const { data: products } = useGetAllSellerProductsQuery(
-    authState.user?.id as any
-  );
-  // console.log(products);
-  // console.log(JSON.stringify(products, null, 2));
+export function SellerOrders() {
+  const { data: products } = useGetAllSellerOrdersQuery();
+  console.log(JSON.stringify(products, null, 2));
 
   return (
-    <div className="flex flex-col gap-4 max-w-seller" >
+    <div className="flex flex-col gap-4 max-w-seller">
       <div className="border border-white bg-white shadow-sm w-full px-3 py-2 rounded-md flex-1">
         <Link to="/seller/products/new">
           <Button
             variant="basePrimary"
             className="flex items-center gap-2 ml-auto rounded-full"
+            disabled
           >
             <PlusCircle />
-            Add Product
+            Add Order
           </Button>
         </Link>
       </div>
@@ -42,7 +37,7 @@ export function SellerProducts({ authState }: { authState: AuthState }) {
           )}
         </div>
         <div className="">
-          <DataTable columns={productsColumns} data={products ?? []} />
+          <DataTable columns={OrdersColumns} data={products ?? []} />
         </div>
       </div>
     </div>

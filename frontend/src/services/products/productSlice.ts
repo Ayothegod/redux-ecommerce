@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "../../store";
@@ -9,8 +10,10 @@ import type {
   CreateProductRequest,
   CreateProductResponse,
   GetProductsResponse,
+  GetSellerOrdersResponse,
   GetSingleProductResponse,
   productModel,
+  SellerOrderData,
 } from "./types";
 
 export const productApi = createApi({
@@ -129,6 +132,17 @@ export const productApi = createApi({
         }),
         invalidatesTags: ["Order"],
       }),
+      getAllSellerOrders: builder.query<SellerOrderData[], void>({
+        query: () => ({
+          url: `orders/seller/all`,
+        }),
+        transformResponse: (
+          response: { data: GetSellerOrdersResponse },
+          _meta,
+          _arg
+        ) => response.data.sellerOrders,
+        providesTags: ["Order"],
+      }),
     };
   },
 });
@@ -146,4 +160,5 @@ export const {
   useAddToCartMutation,
   useRemoveFromCartMutation,
   useCreateOrderMutation,
+  useGetAllSellerOrdersQuery
 } = productApi;

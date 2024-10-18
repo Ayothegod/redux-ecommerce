@@ -12,6 +12,9 @@ export default {
       height: {
         base: "calc(100vh - 48px)",
       },
+      width: {
+        seller: "calc(100vw - 240px)",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

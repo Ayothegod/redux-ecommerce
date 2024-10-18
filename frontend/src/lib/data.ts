@@ -1,10 +1,8 @@
 import {
   LayoutDashboard,
-  MessageSquare,
   NotebookPen,
   Settings,
-  SquareChartGantt,
-  Users,
+  SquareChartGantt
 } from "lucide-react";
 
 export const sidebarData = [
@@ -14,11 +12,11 @@ export const sidebarData = [
     url: "/seller/dashboard",
     icon: LayoutDashboard,
   },
-  { id: 2, title: "Orders", url: "/Analytics", icon: NotebookPen },
+  { id: 2, title: "Orders", url: "/seller/orders", icon: NotebookPen },
   { id: 3, title: "Products", url: "/seller/products", icon: SquareChartGantt },
-  { id: 4, title: "Customers", url: "/Accounts", icon: Users },
-  { id: 5, title: "Messages", url: "/Accounts", icon: MessageSquare },
-  { id: 6, title: "Settings", url: "/Accounts", icon: Settings },
+  // { id: 4, title: "Customers", url: "/Accounts", icon: Users },
+  // { id: 5, title: "Messages", url: "/Accounts", icon: MessageSquare },
+  { id: 6, title: "Settings", url: "/seller/settings", icon: Settings },
 ];
 
 export const baseNav = [

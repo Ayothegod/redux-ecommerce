@@ -16,6 +16,7 @@ import { Cart } from "./routes/shopper/Cart";
 import { ShopperLayout } from "./layouts/ShopperLayout";
 import { Checkout } from "./routes/shopper/Checkout";
 import { CompleteOrder } from "./routes/shopper/CompleteOrder";
+import { SellerOrders } from "./routes/seller/orders";
 
 export function App() {
   let authState: AuthState = {
@@ -84,7 +85,7 @@ export function App() {
         },
         {
           path: "/products/order/confirmation",
-          element: <CompleteOrder authState={authState} />,
+          element: <CompleteOrder />,
           errorElement: <RootError />,
         },
       ],
@@ -124,6 +125,10 @@ export function App() {
         {
           path: "/seller/products/new",
           element: <SellerCreateProduct />,
+        },
+        {
+          path: "/seller/orders",
+          element: <SellerOrders />,
         },
       ],
     },

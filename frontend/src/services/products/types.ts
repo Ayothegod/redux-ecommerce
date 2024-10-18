@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface productModel {
   id: string;
   name: string;
@@ -88,4 +89,41 @@ export interface CreateOrderResponse {
     items: number;
     amount: number;
   };
+}
+
+export interface GetSellerOrdersResponse {
+  sellerOrders: SellerOrderData[];
+}
+
+export interface SellerOrderData {
+  id: string;
+  orderId: string;
+  productId: string;
+  sellerId: string;
+  quantity: number;
+  price: number;
+  status: string;
+  product: SellerOrderProduct;
+  order: SellerOrderParent;
+}
+
+export interface SellerOrderProduct {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  imageUrl: string;
+  category: string;
+  createdAt: Date;
+  updatedAt: Date;
+  sellerId: string;
+}
+
+export interface SellerOrderParent {
+  id: string;
+  status: string;
+  totalAmount: number;
+  createdAt: Date;
+  updatedAt: Date;
+  shopperId: string;
 }

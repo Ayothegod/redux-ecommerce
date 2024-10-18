@@ -43,7 +43,7 @@ export function SellerLayout({
     <div className="">
       <section className="max-w-7x mx-auto flex">
         {/* DESKTOP-SIDEBAR */}
-        <div className="hidden md:sticky h-screen md:top-0 md:flex md:w-[240px] border flex-shrink-0 px-2 py-4">
+        <div className="hidden md:sticky h-screen md:top-0 md:flex md:w-60 border flex-shrink-0 px-2 py-4">
           <div className="w-full h-screen space-y-4">
             <div className="flex items-center gap-4 text-2xl font-bold">
               <span className=" font-space-grotesk">E-corng</span>
@@ -55,10 +55,10 @@ export function SellerLayout({
                   to={data.url}
                   key={data.id}
                   className={clsx(
-                    "flex items-center gap-4 p-2 rounded-md font-medium ",
+                    "flex items-center gap-4 p-2 rounded-md font-medium border border-white ",
                     data.url !== path &&
-                      "text-neutral-500 hover:bg-blue-400/90 hover:text-white",
-                    data.url === path && "bg-blue-400 text-white"
+                      "text-neutral-500 hover:border-base hover:text-",
+                    data.url === path && "bg-base text-white"
                   )}
                 >
                   <data.icon className="w-5 h-5" />
@@ -69,7 +69,7 @@ export function SellerLayout({
           </div>
         </div>
 
-        <div className="w-full bg-neutral-100 min-h-full flex-grow px-4">
+        <div className="w-full bg-neutral-100 min-h-screen flex-grow px-4">
           <TopBar authState={authState} />
           <div className="md:px-3">
             <Outlet />

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/rules-of-hooks */
-import { productModel } from "@/services/products/types";
+import { productModel, SellerOrderData } from "@/services/products/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { format } from "date-fns";
@@ -15,32 +16,32 @@ import {
 import { HandleImage } from "@/components/seller/HandleImage";
 import { useState } from "react";
 
-export const products: productModel[] = [
-  {
-    id: "728ed52f",
-    name: "New Top",
-    price: 100,
-    category: "Table",
-    createdAt: new Date(21062004),
-    updatedAt: new Date(),
-    imageUrl: "",
-    description: "",
-    sellerId: "",
-    tags: [],
-  },
-  {
-    id: "489e1d42",
-    name: "processing",
-    price: 125,
-    category: "Table",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    imageUrl: "",
-    description: "",
-    sellerId: "",
-    tags: [],
-  },
-];
+// export const products: productModel[] = [
+//   {
+//     id: "728ed52f",
+//     name: "New Top",
+//     price: 100,
+//     category: "Table",
+//     createdAt: new Date(21062004),
+//     updatedAt: new Date(),
+//     imageUrl: "",
+//     description: "",
+//     sellerId: "",
+//     tags: [],
+//   },
+//   {
+//     id: "489e1d42",
+//     name: "processing",
+//     price: 125,
+//     category: "Table",
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//     imageUrl: "",
+//     description: "",
+//     sellerId: "",
+//     tags: [],
+//   },
+// ];
 
 export const productsColumns: ColumnDef<productModel>[] = [
   {
@@ -145,6 +146,99 @@ export const productsColumns: ColumnDef<productModel>[] = [
             </div>
           )}
         </>
+      );
+    },
+  },
+];
+
+export const OrdersColumns: ColumnDef<SellerOrderData>[] = [
+  {
+    accessorKey: "id",
+    header: "Order No",
+    cell: ({ row }) => {
+      const price: any = row.getValue("id");
+      const orderNo = price.slice(10, 20);
+
+      return <div className="">#{orderNo}</div>;
+    },
+  },
+  {
+    accessorKey: "order.createdAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Created At
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const originalDate = row.original.order.createdAt;
+      const date = new Date(originalDate);
+      const formattedDate = format(date, "yyyy-MM-dd");
+      return <div>{formattedDate}</div>;
+    },
+  },
+  {
+    accessorKey: "product.name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "price",
+    header: () => <div className="text-right">Amount</div>,
+    cell: ({ row }) => {
+      const price = parseFloat(row.getValue("price"));
+      const quantity = row.original.quantity;
+      const totalAmount = price * quantity;
+
+      return <div className="text-right font-medium">${totalAmount}</div>;
+    },
+  },
+  {
+    accessorKey: "status",
+    header: () => <div className="text-right">Amount</div>,
+    cell: ({ row }) => {
+      const status = row.getValue("status");
+      if (status === "DELIVERED") {
+        return (
+          <div className="text-right font-medium p-1 rounded bg-green-500 text-white">
+            DELIVERED
+          </div>
+        );
+      }
+
+      if (status === "CANCELLED") {
+        return (
+          <div className="text-right font-medium p-1 rounded bg-red-500 text-white">
+            DELIVERED
+          </div>
+        );
+      }
+      if (status === "SHIPPED") {
+        return (
+          <div className="text-right font-medium p-1 rounded bg-blue-500 text-white">
+            DELIVERED
+          </div>
+        );
+      }
+
+      return (
+        <div className="text-center font-medium p-1 rounded bg-yellow-500 text-white">
+          STATUS
+        </div>
       );
     },
   },
